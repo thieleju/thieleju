@@ -2,6 +2,10 @@
 
 <p align="left">
 <img src="https://gpvc.arturio.dev/thieleju" />
+  
+<img src="https://badges.pufler.dev/repos/thieleju"/>
+  
+<img src="https://badges.pufler.dev/years/thieleju"/>
 
 <img src="https://img.shields.io/github/followers/thieleju.svg?style=social&label=Follow&maxAge=2592000h" />
 
