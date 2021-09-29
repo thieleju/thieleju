@@ -1,12 +1,11 @@
 # **Hi, I'm Julian aka Ryua** 👋
 
+<p align="left">
 <img src="https://gpvc.arturio.dev/thieleju" />
 
 <img src="https://img.shields.io/github/followers/thieleju.svg?style=social&label=Follow&maxAge=2592000h" />
 
-<br>
-
-<br>
+</p>
 
 ### About me:
 
@@ -16,11 +15,7 @@
 
 - ❤️ Chess, Penspinning & Coding
 
-<br>
-
 ---
-
-<br>
 
 <details>
   <summary>⚡ My Skill Set</summary>
@@ -51,11 +46,7 @@
 
 </details>
 
-<br>
-
 ---
-
-<br>
     
 <p align="center">
 <a href="https://discord.com/users/219847894000205834">
@@ -69,15 +60,10 @@
 
 <a href="https://www.chess.com/member/ryuachess">
 <img height="30" src="assets\chesscom.svg" />
-
 </a>
 </p>
 
-<br>
-
 ---
-
-<br>
 
 <p align="center">
 
