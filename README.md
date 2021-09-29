@@ -7,8 +7,6 @@
   
 <img src="https://badges.pufler.dev/years/thieleju"/>
 
-<img src="https://img.shields.io/github/followers/thieleju.svg?style=social&label=Follow&maxAge=2592000h" />
-
 </p>
 
 ### About me:
