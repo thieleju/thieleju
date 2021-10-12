@@ -17,6 +17,8 @@
 
 - ❤️ Chess, Penspinning & Coding
 
+- 👀 [chat.node5.de](https://chat.node5.de)
+
 ---
 
 <details>
