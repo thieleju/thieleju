@@ -11,7 +11,7 @@
 
 ### About me:
 
-- 👨‍🎓 I'm currently studying software design <a href="https://www.th-ab.de/startseite/" >@TH-Aschaffenburg</a>
+- 👨‍🎓 I'm currently studying software design <a href="https://www.th-ab.de/startseite/" >@TH-Aschaffenburg</a> :de:
 
 - ✨ Currently working on **Vue.js** frontend + **express.js** middleware project
 
