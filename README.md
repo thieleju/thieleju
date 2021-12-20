@@ -1,4 +1,4 @@
-# **Hi, I'm Julian aka Ryua** 👋
+# **Hi, I'm Julian** 👋
 
 <p align="left">
   <img src="https://gpvc.arturio.dev/thieleju" />
