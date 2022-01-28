@@ -2,11 +2,10 @@
 
 <p align="left">
 
-  <img src="https://badges.pufler.dev/repos/thieleju"/>
-
-  <img src="https://badges.pufler.dev/years/thieleju"/>
+  <img src="https://badges.pufler.dev/commits/monthly/thieleju"/>
 
 </p>
+
 
 ### About me:
 
