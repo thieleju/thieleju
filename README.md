@@ -30,6 +30,7 @@
 
 - <details>
   <summary>⚡ My Skill Set</summary>
+  <br>
   <p align="center">
     <img src="https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vue.js&logoColor=4FC08D" />
     <img src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" />
