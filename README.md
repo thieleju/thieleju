@@ -55,6 +55,6 @@
 ---
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=thieleju&theme=blue-green&show_icons=true"/>
+  <img src="https://github-readme-stats.vercel.app/api?username=thieleju&theme=blue-green"/>
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thieleju&theme=blue-green&show_icons=true&hide=jupyter%20notebook&layout=compact"  />
 </p>
