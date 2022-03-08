@@ -9,7 +9,7 @@
 
 - 👨‍🎓 I'm currently studying software design at the University of Applied Sciences in <a href="https://www.th-ab.de/index.php?id=55&L=1" >Aschaffenburg</a> :de:
 
-- ✨ Currently working on **Vue.js** frontend + **express.js** middleware project
+- ✨ Currently working on **Vue.js** frontend + **express.js** middleware project(s)
 
 - ❤️ Chess, Penspinning & Coding
 
