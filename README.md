@@ -1,7 +1,7 @@
 # **Hi, I'm Julian** 👋
 
 <p align="left">
-  <img src="https://badges.pufler.dev/commits/monthly/thieleju"/>
+  
 </p>
 
 
