@@ -1,6 +1,6 @@
-# **Hi, I'm Julian** 👋
+# **Hi, I'm Julian**
 
-Currently studying Software Design at the University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a> :de:
+Currently studying Software Design at the University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a> :de: and working with vue.js, express.js and the <a href="https://doc.cwpcollaboration.com/appdevpack/docs/en/homepage.html"> Domino AppDev Pack</a>. 
 
 ---
 
