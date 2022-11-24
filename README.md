@@ -2,7 +2,7 @@
 
 Currently studying Software Design at the University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a> :de: and working with vue.js, express.js and the <a href="https://doc.cwpcollaboration.com/appdevpack/docs/en/homepage.html"> Domino AppDev Pack</a>. 
 
-Play my demo Chess App - https://demo.node5.de/
+Play my demo Chess App [here](https://demo.node5.de/)
 
 ---
 
