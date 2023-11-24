@@ -1,18 +1,23 @@
 name: Chess Workflow
 
 on:
-  repository_dispatch:
-    types: trigger-workflow
-    inputs:
-      parameter:
-        description: "Workflow parameter"
-        required: true
-        type: string
+  issue_comment:
+    types: [created]
+    issues:
+      - 1
 
 jobs:
-  build:
+  issueCommentJob:
     runs-on: ubuntu-latest
     steps:
-      - name: Print parameter
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Get issue comment body
+        id: extract_comment
         run: |
-          - echo "Parameter: ${{ github.event.client_payload.parameter }}"
+          - echo "::set-output name=body::${{ github.event.comment.body }}"
+
+      - name: Output comment content
+        run: |
+          - echo "The comment content is: ${{ steps.extract_comment.outputs.body }}"
