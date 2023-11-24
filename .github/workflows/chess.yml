@@ -41,7 +41,7 @@ jobs:
         run: echo "url=$(echo ${{ github.run_id }}/artifacts/download?path=chessboard-image)" >> $GITHUB_ENV
 
       - name: Comment with Chessboard Image
-        uses: actions/github-script@v6
+        uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
