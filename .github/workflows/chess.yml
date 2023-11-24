@@ -16,8 +16,8 @@ jobs:
       - name: Get issue comment body
         id: extract_comment
         run: |
-          echo "::set-output name=body::${{ github.event.comment.body }}"
+          echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_ENV
 
       - name: Output comment content
         run: |
-          echo "The comment content is: ${{ steps.extract_comment.outputs.body }}"
+          echo "The comment content is: $COMMENT_BODY"
