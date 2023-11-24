@@ -36,19 +36,22 @@ jobs:
           name: chessboard-image
           path: images/chessboard.png
 
-      - name: Get Artifact URL
-        run: echo "url=$(echo ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/download?path=images/chessboard.png)" >> $GITHUB_ENV
-
-      - name: Comment with Chessboard Image
-        uses: actions/github-script@v4
+      - name: Comment on Issue
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Chessboard image\n![Chessboard](${{ env.url }})'
-            });
-          user-agent: actions/github-script
-          result-encoding: json
+              body: `@${{ github.event.comment.user.login }} played the move ${{ github.event.comment.body }}`
+            })
+
+      - name: Commit changes
+        run: |
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          git add images/chessboard.png fen.txt
+          git commit -m "🚀 Update chessboard image and FEN file"
+          git push origin HEAD
