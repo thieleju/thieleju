@@ -3,8 +3,7 @@ name: Chess Workflow
 on:
   issue_comment:
     types: [created]
-    issues:
-      - 1
+    issues: [1]
 
 jobs:
   issueCommentJob:
@@ -13,11 +12,53 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get issue comment body
-        id: extract_comment
+      - name: Get chess move notation from comment
         run: |
           echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_ENV
+          echo "${{ github.event.comment.user.login }} wants to move ${{ github.event.comment.body }}"
 
-      - name: Output comment content
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+
+      - name: Install Python dependencies
         run: |
-          echo "The comment content is: $COMMENT_BODY"
+          pip install -r scripts/requirements.txt
+
+      - name: Generate Chessboard Image
+        run: |
+          python scripts/export_chessboard.py $COMMENT_BODY
+
+      - name: Upload Chessboard Image
+        uses: actions/upload-artifact@v2
+        with:
+          name: chessboard-image
+          path: images/chessboard.png
+
+      - name: Get artifact URL
+        id: chessboard_artifact
+        run: echo "::set-output name=url::$(echo ${{ github.run_id }})/artifacts/download?path=chessboard-image"
+
+      - name: Comment with Chessboard Image
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { data } = await github.actions.getArtifactUrl({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: '${{ steps.chessboard_artifact.outputs.url }}'
+            });
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Chessboard image',
+              // Add the image URL to the comment
+              // Assuming the image is in the 'images' directory
+              // Update the path if it's different
+              files: {
+                'images/chessboard.png': data.download_url
+              }
+            });
