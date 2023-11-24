@@ -12,5 +12,5 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png" \>
+  <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png?v=$TIMESTAMP" \>
 </p>
