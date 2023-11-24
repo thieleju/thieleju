@@ -11,6 +11,8 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 
 ---
 
+## Play chess by commenting on [this issue](https://github.com/thieleju/thieleju/issues/1)! (WIP) 
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png?v=$TIMESTAMP" \>
 </p>
