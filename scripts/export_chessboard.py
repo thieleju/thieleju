@@ -159,7 +159,7 @@ def add_annotations(draw, is_white_bottom):
             ),
             chr(97 + i) if is_white_bottom else chr(97 + 7 - i),
             fill=text_color if is_white_bottom else bg_color,
-            font=ImageFont.truetype("arial.ttf", 14),
+            font=ImageFont.load_default(),
         )
         draw.text(
             (
@@ -170,8 +170,9 @@ def add_annotations(draw, is_white_bottom):
             ),
             str(8 - i) if is_white_bottom else str(i + 1),
             fill=bg_color if is_white_bottom else text_color,
-            font=ImageFont.truetype("arial.ttf", 14),
+            font=ImageFont.load_default(),
         )
+
 
 
 def save_fen_to_file(board, file_path):
