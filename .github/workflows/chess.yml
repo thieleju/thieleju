@@ -37,8 +37,7 @@ jobs:
           path: images/chessboard.png
 
       - name: Get Artifact URL
-        id: get_artifact_url
-        run: echo "url=$(echo ${{ github.run_id }}/artifacts/download?path=chessboard-image)" >> $GITHUB_ENV
+        run: echo "url=$(echo ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts/download?path=images/chessboard.png)" >> $GITHUB_ENV
 
       - name: Comment with Chessboard Image
         uses: actions/github-script@v4
