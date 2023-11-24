@@ -8,5 +8,3 @@ Currently studying Software Design at the University of Applied Sciences in <a h
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thieleju&theme=blue-green&hide=jupyter%20notebook&layout=compact"  />
   <img width="420" src="https://github-readme-stats.vercel.app/api?username=thieleju&theme=blue-green&show_icons=true"/>
 </p>
-
-[Trigger Workflow](https://api.github.com/repos/thieleju/thieleju/dispatches?event_type=trigger-workflow&client_payload={"parameter":"Example"})
