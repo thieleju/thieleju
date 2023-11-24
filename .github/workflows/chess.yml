@@ -29,6 +29,8 @@ jobs:
       - name: Generate Chessboard Image
         run: |
           python scripts/export_chessboard.py $COMMENT_BODY
+          TIMESTAMP=$(date +%s)
+          sed -i 's|\(<img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png\)\(\?v=[^"]*\)\?"|\1?v=$TIMESTAMP"|g' README.md
 
       - name: Upload Chessboard Image
         uses: actions/upload-artifact@v2
@@ -47,11 +49,11 @@ jobs:
               body: `@${{ github.event.comment.user.login }} played the move ${{ github.event.comment.body }}`
             })
 
-      - name: Commit changes
+      - name: Update readme link and commit changes
         run: |
           git config --global user.email "actions@github.com"
           git config --global user.name "GitHub Actions"
 
-          git add images/chessboard.png fen.txt
-          git commit -m "🚀 Update chessboard image and FEN file"
+          git add images/chessboard.png fen.txt README.md
+          git commit -m "🚀 Update chessboard image, fen and readme"
           git push origin HEAD
