@@ -6,7 +6,7 @@ on:
     issues: [1]
 
 jobs:
-  issueCommentJob:
+  Make-a-move:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -54,6 +54,8 @@ jobs:
               // Assuming the image is in the 'images' directory
               // Update the path if it's different
               files: {
-                'images/chessboard.png': ${{ env.url }}
+                'images/chessboard.png': '${{ env.url }}'
               }
             });
+          user-agent: actions/github-script
+          result-encoding: json
