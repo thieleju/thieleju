@@ -36,20 +36,15 @@ jobs:
           name: chessboard-image
           path: images/chessboard.png
 
-      - name: Get artifact URL
-        id: chessboard_artifact
-        run: echo "::set-output name=url::$(echo ${{ github.run_id }})/artifacts/download?path=chessboard-image"
+      - name: Get Artifact URL
+        id: get_artifact_url
+        run: echo "url=$(echo ${{ github.run_id }}/artifacts/download?path=chessboard-image)" >> $GITHUB_ENV
 
       - name: Comment with Chessboard Image
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { data } = await github.actions.getArtifactUrl({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              artifact_id: '${{ steps.chessboard_artifact.outputs.url }}'
-            });
             github.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -59,6 +54,6 @@ jobs:
               // Assuming the image is in the 'images' directory
               // Update the path if it's different
               files: {
-                'images/chessboard.png': data.download_url
+                'images/chessboard.png': ${{ env.url }}
               }
             });
