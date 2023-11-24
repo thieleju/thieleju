@@ -26,7 +26,7 @@ settings = {
     "piece_offset_ratio": 0.5,
     "fen_file_path": "fen.txt",
     "pgn_file_path": "pgn.txt",
-    "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR",
+    "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1",
 }
 
 settings["cell_size"] = min(settings["width"], settings["height"]) // 8
@@ -263,9 +263,10 @@ def reset_game():
 
 
 if __name__ == "__main__":
+    # If no parameter is passed, reset the game
     if len(sys.argv) < 2:
-        print("No move provided!")
-        sys.exit(1)
+        reset_game()
+        sys.exit(0)
 
     # Load the FEN from the fen.txt file
     loaded_fen = load_fen_from_file(settings["fen_file_path"])
