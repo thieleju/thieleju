@@ -41,7 +41,7 @@ jobs:
         run: echo "url=$(echo ${{ github.run_id }}/artifacts/download?path=chessboard-image)" >> $GITHUB_ENV
 
       - name: Comment with Chessboard Image
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -49,13 +49,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Chessboard image',
-              // Add the image URL to the comment
-              // Assuming the image is in the 'images' directory
-              // Update the path if it's different
-              files: {
-                'images/chessboard.png': '${{ env.url }}'
-              }
+              body: 'Chessboard image\n![Chessboard](${{ env.url }})
             });
           user-agent: actions/github-script
           result-encoding: json
