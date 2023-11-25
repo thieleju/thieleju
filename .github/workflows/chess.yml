@@ -52,15 +52,13 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `
-                Comment on this issue to make a move!
+              body: `Comment on this issue to make a move!
 
                 Move has to be in (SAN)](https://www.chess.com/terms/chess-notation) (e4, exd5, Qxf7+, ...)
 
                 ![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})
                 
-                Last move by ${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}
-                `
+                Last move by ${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}`
             })
 
             # github.rest.issues.createComment({
