@@ -28,29 +28,47 @@ jobs:
 
       - name: Generate Chessboard Image
         run: |
+          # delete all other chessboard images
+          rm images/chessboard*.png
+
+          # generate new chessboard image
           python scripts/export_chessboard.py $COMMENT_BODY
 
-          TIMESTAMP=$(date +%s)
           # rename file to chessboard.png + timestamp
+          TIMESTAMP=$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
+
+          # update image link in readme
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)[^\" ]*|\1$TIMESTAMP.png|g" README.md
 
-      # - name: Upload Chessboard Image
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: chessboard-image
-      #     path: images/chessboard.png
+          # add Filename to github_env
+          echo "CHESSBOARD_FILENAME=image/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
-      - name: Comment on Issue
+      - name: Edit issue
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
+            github.rest.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `@${{ github.event.comment.user.login }} played the move ${{ github.event.comment.body }}`
+              body: `
+                Comment on this issue to make a move!
+
+                Move has to be in (SAN)](https://www.chess.com/terms/chess-notation) (e4, exd5, Qxf7+, ...)
+
+                ![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})
+                
+                Last move by ${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}
+                `
             })
+
+            # github.rest.issues.createComment({
+            #   issue_number: context.issue.number,
+            #   owner: context.repo.owner,
+            #   repo: context.repo.repo,
+            #   body: `@${{ github.event.comment.user.login }} played the move ${{ github.event.comment.body }}`
+            # })
 
       - name: Update readme link and commit changes
         run: |
@@ -60,3 +78,14 @@ jobs:
           git add .
           git commit -m "🚀 Update chessboard image, fen and readme"
           git push origin HEAD
+
+      - name: Remove comment that triggered workflow
+        uses: actions/github-script@v7
+        with:
+          script: |
+            # delete comment on issue that triggered this workflow
+            github.rest.issues.deleteComment({
+              comment_id: context.issue.comment_id,
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            })
