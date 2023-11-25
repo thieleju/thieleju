@@ -35,7 +35,7 @@ jobs:
           python scripts/export_chessboard.py $COMMENT_BODY
 
           # rename file to chessboard.png + timestamp
-          TIMESTAMP=$(date +%s)
+          TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
 
           # update image link in readme
