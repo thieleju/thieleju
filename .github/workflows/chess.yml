@@ -35,18 +35,8 @@ jobs:
           # generate new chessboard image
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
-          # pwd 
-          # ls -la 
-          cat .env
-
           # read env variable from python script
           source .env
-
-          echo "Game Status: $GAME_STATUS"
-          echo "Move Status: $MOVE_STATUS"
-          echo "Which Turn: $WHICH_TURN"
-          echo "Valid Moves: $VALID_MOVES"
-          echo "Game History: $GAME_HISTORY"
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
@@ -66,7 +56,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Comment on this issue to make a move!\nMove has to be in [Standard Algebraic Notation (SAN)](https://www.chess.com/terms/chess-notation) (e4, Bf4, exd5, Qxf7+, ...)\n\n![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})\nLast move by @${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}"
+              body: "Comment on this issue to make a move!\n- Move has to be in [Standard Algebraic Notation (SAN)](https://www.chess.com/terms/chess-notation) (e4, Bf4, exd5, Qxf7+, ...)\n\n![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})\n\nIt's ${{ env.WHICH_TURN }}'s turn to move.\n\nValid moves: ${{ env.VALID_MOVES}}\n\n${{ env.GAME_HISTORY }}"
             })
 
       - name: Update readme link and commit changes
