@@ -21,6 +21,7 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
+          cache: "pip"
 
       - name: Install Python dependencies
         run: |
@@ -54,20 +55,6 @@ jobs:
               repo: context.repo.repo,
               body: "test"
             })
-
-            # Comment on this issue to make a move!
-
-            #     Move has to be in (SAN)](https://www.chess.com/terms/chess-notation) (e4, exd5, Qxf7+, ...)
-
-            #     ![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})
-                
-            #     Last move by ${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}
-            # github.rest.issues.createComment({
-            #   issue_number: context.issue.number,
-            #   owner: context.repo.owner,
-            #   repo: context.repo.repo,
-            #   body: `@${{ github.event.comment.user.login }} played the move ${{ github.event.comment.body }}`
-            # })
 
       - name: Update readme link and commit changes
         run: |
