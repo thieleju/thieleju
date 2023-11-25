@@ -1,3 +1,4 @@
+import datetime
 import os
 import sys
 
@@ -24,9 +25,8 @@ settings = {
     "output_path": "images/chessboard.png",
     "piece_size_ratio": 0.125,
     "piece_offset_ratio": 0.5,
-    "fen_file_path": "fen.txt",
     "pgn_file_path": "pgn.txt",
-    "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1",
+    "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 }
 
 settings["cell_size"] = min(settings["width"], settings["height"]) // 8
@@ -174,36 +174,6 @@ def add_annotations(draw, is_white_bottom):
         )
 
 
-
-def save_fen_to_file(board, file_path):
-    """Saves the FEN of the board to a text file.
-
-    Args:
-        board (chess.Board): The chess board object.
-        file_path (str): The file path to save the FEN to.
-    """
-    with open(file_path, "w", encoding="utf-8") as file:
-        file.write(board.fen())
-
-
-def load_fen_from_file(file_path):
-    """Loads the FEN from a text file. If the file doesn't exist, writes the start FEN to the file.
-
-    Args:
-        file_path (str): The file path to load the FEN from.
-
-    Returns:
-        str: The FEN string loaded from the file or the start FEN if the file doesn't exist.
-    """
-    if not os.path.exists(file_path):
-        with open(file_path, "w", encoding="utf-8") as file:
-            file.write(settings["start_fen"])
-        return settings["start_fen"]
-
-    with open(file_path, "r", encoding="utf-8") as file:
-        return file.read().strip()
-
-
 def export_chessboard(board, is_white_bottom=True):
     """Generates and exports a chessboard image based on the provided board and the position of the bottom player.
 
@@ -240,46 +210,233 @@ def make_move(board, san_move):
     """
     try:
         parsed_move = board.parse_san(san_move)
-        if parsed_move in board.legal_moves:
-            board.push(parsed_move)
-            print(
-                f"{'white' if board.turn != chess.WHITE else 'black'}: move {san_move}"
-            )
-            return True
+        if not parsed_move in board.legal_moves:
+            return False
 
-        print("Invalid move!")
-        sys.exit(1)
+        board.push(parsed_move)
+        return True
+
     except ValueError:
-        print("Invalid move format!")
-        sys.exit(1)
+        return False
 
 
 def reset_game():
     """Resets the game to the starting position."""
     board = chess.Board(settings["start_fen"])
 
-    save_fen_to_file(board, settings["fen_file_path"])
+    initialize_pgn()
     export_chessboard(board)
+
+
+def get_valid_moves_from_fen(fen):
+    """Gets the valid moves from a FEN string.
+
+    Args:
+        fen (str): The FEN string.
+
+    Returns:
+        list: The list of valid moves.
+    """
+    board = chess.Board(fen)
+    return [board.san(move) for move in board.legal_moves]
+
+
+def game_end_status(board):
+    """Returns the status of the game if it has ended.
+
+    Args:
+        board (chess.Board): The chess board object.
+
+    Returns:
+        str or None: The status of the game ('white_wins', 'black_wins', 'draw', 'stalemate', 'insufficient_material', 'threefold_repetition') or "in_progress" if the game is ongoing.
+    """
+    if board.is_game_over():
+        if board.is_checkmate():
+            if board.turn == chess.WHITE:
+                return "black_wins"
+            return "white_wins"
+        if board.is_stalemate():
+            return "stalemate"
+        if board.is_insufficient_material():
+            return "insufficient_material"
+        return "draw"
+
+    if board.can_claim_threefold_repetition():
+        return "threefold_repetition"
+
+    return "in_progress"
+
+
+def initialize_pgn():
+    """Initializes the PGN file with default headers for a new game."""
+    try:
+        game = chess.pgn.Game()
+        game.headers["Event"] = "Chess Game"
+        game.headers["Site"] = "https://github.com/thieleju"
+        game.headers["Date"] = datetime.datetime.now().strftime("%Y.%m.%d")
+        game.headers["Round"] = "1"
+        game.headers["White"] = "Player 1"
+        game.headers["Black"] = "Player 2"
+
+        with open(settings["pgn_file_path"], "w", encoding="utf8") as file:
+            file.write(str(game))
+    except Exception as e:
+        print(f"Error initializing PGN file: {e}")
+
+
+def update_pgn_with_move(san_move, username):
+    """Updates the PGN file with the provided move in SAN notation and the username as a comment for the move.
+
+    Args:
+        san_move (str): The move in Standard Algebraic Notation (SAN).
+        username (str): The username of the player making the move.
+    """
+    try:
+        if not os.path.exists(settings["pgn_file_path"]):
+            initialize_pgn()
+
+        with open(settings["pgn_file_path"], "r+", encoding="utf8") as file:
+            game = chess.pgn.read_game(file)
+            if game is None:
+                file.seek(0)
+                file.truncate()
+                initialize_pgn()
+                file.seek(0)
+                game = chess.pgn.read_game(file)
+
+            node = game
+            while node.variations:
+                node = node.variation(0)
+
+            parsed_move = node.board().parse_san(san_move)
+            node = node.add_variation(parsed_move)
+            node.comment = username
+
+            file.seek(0)
+            file.write(str(game))
+            file.truncate()
+    except Exception as e:
+        print(f"Error updating PGN with move: {e}")
+
+
+def load_game_from_pgn():
+    """Loads a game from a PGN file and returns the board object.
+
+    Returns:
+        chess.Board: The chess board object representing the game.
+    Raises:
+        ValueError: If the PGN content is invalid.
+    """
+    try:
+        if not os.path.exists(settings["pgn_file_path"]):
+            initialize_pgn()
+
+        with open(settings["pgn_file_path"], encoding="utf8") as file:
+            game = chess.pgn.read_game(file)
+            if game is None:  # Invalid PGN content
+                raise ValueError("Invalid PGN content")
+            board = game.board()
+            for move in game.mainline_moves():
+                board.push(move)
+            return board
+    except Exception as e:
+        print(f"Error loading from PGN: {e}")
+        return chess.Board()
+
+
+def get_moves_and_users_from_pgn():
+    """
+    Returns the moves and users from the PGN file.
+
+    Returns:
+        list: The list of moves in the format (move_number, san_move, username)
+    """
+    moves_with_users = []
+    try:
+        with open(settings["pgn_file_path"], encoding="utf8") as file:
+            game = chess.pgn.read_game(file)
+            node = game
+            move_number = 0
+
+            while node:
+                comment = node.comment
+                if comment:
+                    move = node.move
+                    san_move = node.parent.board().san(move)
+                    moves_with_users.append((move_number, san_move, comment))
+                if node.board().turn == chess.WHITE:
+                    move_number += 1
+                node = node.next()
+    except Exception as e:
+        print(f"Error loading from PGN: {e}")
+        sys.exit(1)
+    return moves_with_users
+
+
+def format_moves(moves_list):
+    """
+    Formats the moves in the following format:
+
+    Args:
+        moves_list (list): The list of moves in the format (move_number, san_move, username)
+
+    Returns:
+        str: The formatted moves in the format:
+            1. e4 (@user1), e5 (@user2)
+            2. Nf3 (@user3), Nc6 (@user4)
+    """
+    move_numbers = set(move[0] for move in moves_list)
+    formatted_moves = []
+
+    for move_number in move_numbers:
+        moves_with_same_number = [move for move in moves_list if move[0] == move_number]
+        moves_text = " ".join(
+            [f"{move[1]} (@{move[2]})" for move in moves_with_same_number]
+        )
+        formatted_moves.append(f"{move_number}. {moves_text}")
+
+    return "\n".join(formatted_moves)
 
 
 if __name__ == "__main__":
     # If no parameter is passed, reset the game
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 3:
         reset_game()
         sys.exit(0)
 
-    # Load the FEN from the fen.txt file
-    loaded_fen = load_fen_from_file(settings["fen_file_path"])
+    move = sys.argv[1]
+    username = sys.argv[2]
 
-    # initialize the board with the loaded FEN
-    current_board = chess.Board(loaded_fen)
+    # initialize the board with the moves from the pgn
+    current_board = load_game_from_pgn()
 
     # make move based on the parameter passed
-    comment_body = sys.argv[1]
-    make_move(current_board, comment_body)
+    is_move_valid = make_move(current_board, move)
 
-    # save the FEN to the fen.txt file
-    save_fen_to_file(current_board, settings["fen_file_path"])
+    moves = ", ".join([current_board.san(move) for move in current_board.legal_moves])
+    status = game_end_status(current_board)
+    turn = "white" if current_board.turn == chess.WHITE else "black"
+    move_status = "valid" if is_move_valid else "invalid"
+
+    # save PGN to file
+    if is_move_valid:
+        update_pgn_with_move(move, username)
+
+    game_history = get_moves_and_users_from_pgn()
+    game_history_formatted = format_moves(game_history)
+
+    # set the environment variables
+    os.environ["GAME_STATUS"] = status
+    os.environ["MOVE_STATUS"] = move_status
+    os.environ["WHICH_TURN"] = turn
+    os.environ["VALID_MOVES"] = moves
+    os.environ["GAME_HISTORY"] = game_history_formatted
+
+    print("GAME_STATUS\t", status)
+    print("MOVE_STATUS\t", move_status)
+    print("WHICH_TURN\t", turn)
+    print("VALID_MOVES\t", moves)
+    print("GAME_HISTORY\t", game_history_formatted)
 
     # Export the chessboard image
     export_chessboard(current_board)
