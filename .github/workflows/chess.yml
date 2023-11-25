@@ -29,8 +29,11 @@ jobs:
       - name: Generate Chessboard Image
         run: |
           python scripts/export_chessboard.py $COMMENT_BODY
+
           TIMESTAMP=$(date +%s)
-          sed -i 's|\(<img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png\)\(\?v=[^"]*\)\?"|\1?v='"$TIMESTAMP"'"|g' README.md
+          # rename file to chessboard.png + timestamp
+          mv images/chessboard.png images/chessboard$TIMESTAMP.png 
+          sed -i "s|\(<img src=\"https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)\.png|\1$TIMESTAMP.png|g" README.md
 
       - name: Upload Chessboard Image
         uses: actions/upload-artifact@v2
