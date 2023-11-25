@@ -46,7 +46,7 @@ jobs:
           echo "CHESSBOARD_FILENAME=images/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
           # build issue body
-          body=$(cat <<< "EOF
+          ISSUE_BODY=$(cat <<<
           Comment on this issue to make a move!
 
           Move has to be in (SAN)](https://www.chess.com/terms/chess-notation) (e4, Bf4, exd5, Qxf7+, ...)
@@ -55,6 +55,7 @@ jobs:
 
           Last move by ${{ github.event.comment.user.login }}: ${{ github.event.comment.body }}
           )
+          echo "ISSUE_BODY=$ISSUE_BODY" >> $GITHUB_ENV
 
       - name: Edit issue
         uses: actions/github-script@v7
@@ -64,7 +65,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})"
+              body: "${{ env.ISSUE_BODY }}"
             })
 
       - name: Update readme link and commit changes
