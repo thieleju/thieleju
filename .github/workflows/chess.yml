@@ -38,7 +38,7 @@ jobs:
           # read env variable from python script
           source .env
 
-          echo "env: ${{ env }}"
+          echo "env: ${{ env.GAME_STATUS }}"
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
