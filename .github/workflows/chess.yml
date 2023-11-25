@@ -35,6 +35,15 @@ jobs:
           # generate new chessboard image
           python scripts/export_chessboard.py $COMMENT_BODY
 
+          # read env variable from python script
+          source .env
+
+          echo "Game Status: $GAME_STATUS"
+          echo "Move Status: $MOVE_STATUS"
+          echo "Which Turn: $WHICH_TURN"
+          echo "Valid Moves: $VALID_MOVES"
+          echo "Game History: $GAME_HISTORY"
+
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
