@@ -54,8 +54,6 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            # read env variable from python script
-            source .env
             github.rest.issues.update({
               issue_number: context.issue.number,
               owner: context.repo.owner,
