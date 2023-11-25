@@ -30,7 +30,7 @@ jobs:
         run: |
           python scripts/export_chessboard.py $COMMENT_BODY
           TIMESTAMP=$(date +%s)
-          sed -i 's|\(<img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png\)\(\?v=[^"]*\)\?"|\1?v=$TIMESTAMP"|g' README.md
+          sed -i 's|\(<img src="https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard.png\)\(\?v=[^"]*\)\?"|\1?v='"$TIMESTAMP"'|g' README.md
 
       - name: Upload Chessboard Image
         uses: actions/upload-artifact@v2
