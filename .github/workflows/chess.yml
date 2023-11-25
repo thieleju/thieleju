@@ -53,7 +53,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "test"
+              body: "![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})"
             })
 
       - name: Update readme link and commit changes
@@ -69,7 +69,6 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            # delete comment on issue that triggered this workflow
             github.rest.issues.deleteComment({
               comment_id: context.issue.comment_id,
               owner: context.repo.owner,
