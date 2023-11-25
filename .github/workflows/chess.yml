@@ -33,7 +33,7 @@ jobs:
           rm images/chessboard*.png
 
           # generate new chessboard image
-          python scripts/export_chessboard.py $COMMENT_BODY
+          python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
           # read env variable from python script
           source .env
