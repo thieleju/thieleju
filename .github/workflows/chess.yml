@@ -49,7 +49,7 @@ jobs:
           mv chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
 
           # update image link in readme
-          sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/games/game1/chessboard\)[^-]*-[^.]*.png|\1-$TIMESTAMP.png|g" README.md
+          sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/games/game1/chessboard\)[^-]*-[^.]*.png|\1$TIMESTAMP.png|g" README.md
 
           # add Filename to github_env
           echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
