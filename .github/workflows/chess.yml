@@ -35,6 +35,7 @@ jobs:
           # generate new chessboard image
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
+          cat .env
           # read env variable from python script
           # source .env
           export $(grep -v '^#' .env | xargs) 
