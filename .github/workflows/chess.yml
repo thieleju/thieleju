@@ -46,9 +46,13 @@ jobs:
           env 
 
           # export environment variables from .env file
-          export $(grep -v '^#' .env | sed 's/^/export /')
+          # Lies die .env-Datei und setze Variablen mit Leerzeichen
+          while IFS= read -r line; do
+            export "$line"
+          done < <(grep -v '^#' .env | sed 's/^/export /')
 
           env 
+
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
