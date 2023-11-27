@@ -33,14 +33,22 @@ jobs:
           rm images/chessboard*.png
 
           # generate new chessboard image
+          # python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
+
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
-          vars=$(python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }})
-          echo $vars
-          echo "::set-output name=GAME_STATUS::$(echo "$vars" | jq -r '.GAME_STATUS')"
+          echo ".env content"
 
-          echo "GAME_STATUS: ${{ steps.set-vars.outputs.GAME_STATUS }}"
+          cat .env
 
+          echo "start env" 
+
+          env 
+
+          # export environment variables from .env file
+          export $(grep -v '^#' .env | xargs)
+
+          env 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 

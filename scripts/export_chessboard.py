@@ -1,5 +1,4 @@
 import datetime
-import json
 import os
 import sys
 
@@ -9,8 +8,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 # Settings for the chessboard
 settings = {
-    "width": 400,
-    "height": 400,
+    "width": 500,
+    "height": 500,
     "styling": {
         "background": "#d18b47",
         "dark": "#b58863",
@@ -400,21 +399,21 @@ def format_moves(moves_list):
     return "|".join(formatted_moves)
 
 
-# def save_env_variables_to_file(**kwargs):
-#     """Saves environment variables to a file.
-#
-#     Args:
-#         **kwargs: Keyword arguments representing environment variables.
-#                   Example: GAME_STATUS='in_progress', MOVE_STATUS='valid'
-#     """
-#     try:
-#         file_path = settings["env_file"]
-#         with open(file_path, "w", encoding="utf8") as env_file:
-#             for key, value in kwargs.items():
-#                 env_file.write(f'{key}="{value}"\n')
-#         print(f"Environment variables saved to {file_path} successfully.")
-#     except Exception as e:
-#         print(f"Error saving environment variables to {file_path}: {e}")
+def save_env_variables_to_file(**kwargs):
+    """Saves environment variables to a file.
+
+    Args:
+        **kwargs: Keyword arguments representing environment variables.
+                  Example: GAME_STATUS='in_progress', MOVE_STATUS='valid'
+    """
+    try:
+        file_path = settings["env_file"]
+        with open(file_path, "w", encoding="utf8") as env_file:
+            for key, value in kwargs.items():
+                env_file.write(f'{key}="{value}"\n')
+        print(f"Environment variables saved to {file_path} successfully.")
+    except Exception as e:
+        print(f"Error saving environment variables to {file_path}: {e}")
 
 
 if __name__ == "__main__":
@@ -445,24 +444,12 @@ if __name__ == "__main__":
     game_history_formatted = format_moves(game_history)
 
     # set the environment variables
-    # save_env_variables_to_file(
-    #     GAME_STATUS=status,
-    #     MOVE_STATUS=move_status,
-    #     WHICH_TURN=turn,
-    #     VALID_MOVES=moves,
-    #     GAME_HISTORY=game_history_formatted,
-    # )
-
-    print(
-        json.dumps(
-            {
-                "GAME_STATUS": status
-                # "MOVE_STATUS": move_status,
-                # "WHICH_TURN": turn,
-                # "VALID_MOVES": moves,
-                # "GAME_HISTORY": game_history_formatted
-            }
-        )
+    save_env_variables_to_file(
+        GAME_STATUS=status,
+        MOVE_STATUS=move_status,
+        WHICH_TURN=turn,
+        VALID_MOVES=moves,
+        GAME_HISTORY=game_history_formatted,
     )
 
     print("GAME_STATUS\t", status)
