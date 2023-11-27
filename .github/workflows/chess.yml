@@ -99,17 +99,17 @@ jobs:
         with:
           script: |
             if ("${{ env.MOVE_STATUS }}" == 'valid') {
-              await github.reactions.createForIssueComment({
+              await github.rest.reactions.createForIssueComment({
                 comment_id: context.issue.comment_id,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                content: 'white_check_mark'
+                content: 'rocket'
               })
             } else {
-              await github.reactions.createForIssueComment({
+              await github.rest.reactions.createForIssueComment({
                 comment_id: context.issue.comment_id,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                content: 'x'
+                content: 'confused'
               })
             }
