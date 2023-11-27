@@ -37,6 +37,8 @@ jobs:
 
           # read env variable from python script
           source .env
+          echo "test:" 
+          env 
 
           echo "env: ${{ env.GAME_STATUS }}"
 
