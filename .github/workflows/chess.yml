@@ -94,20 +94,20 @@ jobs:
           git commit -m "🚀 Update chessboard image, fen and readme"
           git push origin HEAD
 
-      - name: React with ✅ for valid moves and ❌ for invalid moves
+      - name: React with 🚀 for valid moves and 😖 for invalid moves
         uses: actions/github-script@v7
         with:
           script: |
             if ("${{ env.MOVE_STATUS }}" == 'valid') {
               await github.rest.reactions.createForIssueComment({
-                comment_id: context.issue.comment_id,
+                comment_id: "${{ github.event.comment.id }}",
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 content: 'rocket'
               })
             } else {
               await github.rest.reactions.createForIssueComment({
-                comment_id: context.issue.comment_id,
+                comment_id: "${{ github.event.comment.id }}",
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 content: 'confused'
