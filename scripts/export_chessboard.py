@@ -456,10 +456,10 @@ if __name__ == "__main__":
     print(json.dumps(
         {
             "GAME_STATUS": status, 
-            "MOVE_STATUS": move_status,        
-            "WHICH_TURN": turn,
-            "VALID_MOVES": moves,
-            "GAME_HISTORY": game_history_formatted
+            # "MOVE_STATUS": move_status,        
+            # "WHICH_TURN": turn,
+            # "VALID_MOVES": moves,
+            # "GAME_HISTORY": game_history_formatted
         }
     ))
 

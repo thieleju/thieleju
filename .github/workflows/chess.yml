@@ -36,10 +36,10 @@ jobs:
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
           vars=$(python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }})
-
+          echo $vars
           echo "::set-output name=GAME_STATUS::$(echo "$vars" | jq -r '.GAME_STATUS')"
 
-          echo "GAME_STATUS: ${{ steps.set-vars.outputs }}"
+          echo "GAME_STATUS: ${{ steps.set-vars.outputs.GAME_STATUS }}"
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
