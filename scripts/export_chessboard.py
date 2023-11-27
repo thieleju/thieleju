@@ -383,16 +383,16 @@ def format_moves(moves_list):
 
     Returns:
         str: The formatted moves in the format:
-            1. e4 (@user1), e5 (@user2)
-            2. Nf3 (@user3), Nc6 (@user4)
+            1. e4 @user1, e5 @user2
+            2. Nf3 @user3, Nc6 @user4
     """
     move_numbers = set(move[0] for move in moves_list)
     formatted_moves = []
 
     for move_number in move_numbers:
         moves_with_same_number = [move for move in moves_list if move[0] == move_number]
-        moves_text = " ".join(
-            [f"{move[1]} ({move[2]})" for move in moves_with_same_number]
+        moves_text = ", ".join(
+            [f"{move[1]} {move[2]}" for move in moves_with_same_number]
         )
         formatted_moves.append(f"{move_number}. {moves_text}")
 
