@@ -28,10 +28,10 @@ jobs:
           pip install -r scripts/requirements.txt
 
           # delete all other chessboard images
-          rm images/chessboard*.png
+          rm chessboard*.png
 
           # generate new chessboard image and export .env variables
-          python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
+          python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
 
           # export environment variables from .env file
           while IFS= read -r line; do
@@ -52,7 +52,7 @@ jobs:
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)[^\" ]*|\1$TIMESTAMP.png|g" README.md
 
           # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=images/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+          echo "CHESSBOARD_FILENAME=chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
       - name: Update issue
         if: ${{ env.MOVE_STATUS == 'valid' }}
@@ -60,6 +60,8 @@ jobs:
         with:
           script: |
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
+            let validMovesCount = "${{ env.VALID_MOVES }}".split(", ").length
+            if (validMovesCount === 0) validMovesCount = 1 # if only one legal move
             const issueBody = `
             ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
             > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
@@ -68,11 +70,14 @@ jobs:
             <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
             </div>
 
-            ### Valid moves for ${{ env.WHICH_TURN }}
+            ### There are ${ validMovesCount } valid moves for ${{ env.WHICH_TURN }}:
             > ${{ env.VALID_MOVES }}
 
             <details>
               <summary>Show Move History</summary><br>
+              <div>
+              <img width="350" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif" \>
+              </div>
               ${moveHistory}
             </details>
             `
@@ -102,7 +107,7 @@ jobs:
                 comment_id: "${{ github.event.comment.id }}",
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                content: 'rocket'
+                content: '+1'
               })
             } else {
               await github.rest.reactions.createForIssueComment({
