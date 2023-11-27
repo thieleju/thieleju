@@ -1,16 +1,16 @@
 import datetime
+import json
 import os
 import sys
 
 import chess
 import chess.pgn
 from PIL import Image, ImageDraw, ImageFont
-import json
 
 # Settings for the chessboard
 settings = {
-    "width": 500,
-    "height": 500,
+    "width": 400,
+    "height": 400,
     "styling": {
         "background": "#d18b47",
         "dark": "#b58863",
@@ -453,15 +453,17 @@ if __name__ == "__main__":
     #     GAME_HISTORY=game_history_formatted,
     # )
 
-    print(json.dumps(
-        {
-            "GAME_STATUS": status, 
-            # "MOVE_STATUS": move_status,        
-            # "WHICH_TURN": turn,
-            # "VALID_MOVES": moves,
-            # "GAME_HISTORY": game_history_formatted
-        }
-    ))
+    print(
+        json.dumps(
+            {
+                "GAME_STATUS": status
+                # "MOVE_STATUS": move_status,
+                # "WHICH_TURN": turn,
+                # "VALID_MOVES": moves,
+                # "GAME_HISTORY": game_history_formatted
+            }
+        )
+    )
 
     print("GAME_STATUS\t", status)
     print("MOVE_STATUS\t", move_status)
