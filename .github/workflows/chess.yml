@@ -32,26 +32,16 @@ jobs:
           # delete all other chessboard images
           rm images/chessboard*.png
 
-          # generate new chessboard image
-          # python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
-
+          # generate new chessboard image and export .env variables
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
-          echo ".env content"
-
-          cat .env
-
-          echo "start env" 
-
-          env 
-
           # export environment variables from .env file
-          # Lies die .env-Datei und setze Variablen mit Leerzeichen
           while IFS= read -r line; do
-            export "$line"
-          done < <(grep -v '^#' .env | sed 's/^/export /')
+            eval "export $line"
+          done < <(grep -v '^#' .env)
 
-          env 
+          env
+          echo "GAME_STATUS: $GAME_STATUS"
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
