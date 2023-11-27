@@ -60,8 +60,6 @@ jobs:
         with:
           script: |
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
-            let validMovesCount = "${{ env.VALID_MOVES }}".split(", ").length
-            if (validMovesCount === 0) validMovesCount = 1 # if only one legal move
             const issueBody = `
             ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
             > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
@@ -70,7 +68,7 @@ jobs:
             <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
             </div>
 
-            ### There are ${ validMovesCount } legal moves for ${{ env.WHICH_TURN }}:
+            ### Legal moves for ${{ env.WHICH_TURN }}:
             > ${{ env.VALID_MOVES }}
 
             <details>
