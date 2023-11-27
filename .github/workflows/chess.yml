@@ -40,9 +40,6 @@ jobs:
             eval "export $line"
           done < <(grep -v '^#' .env)
 
-          env
-          echo "GAME_STATUS: $GAME_STATUS"
-
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
@@ -61,7 +58,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: "Comment on this issue to make a move!\n- Move has to be in [Standard Algebraic Notation (SAN)](https://www.chess.com/terms/chess-notation) (e4, Bf4, exd5, Qxf7+, ...)\n\n![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})\n\nIt's ${{ env.WHICH_TURN }}'s turn to move.\n\nValid moves: ${{ env.VALID_MOVES}}\n\n${{ env.GAME_HISTORY }}"
+              body: "Comment on this issue to make a move!\n- Move has to be in [Standard Algebraic Notation (SAN)](https://www.chess.com/terms/chess-notation) (e4, Bf4, exd5, Qxf7+, ...)\n\n![chessboard](https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }})\n\nIt's $WHICH_TURN's turn to move.\n\nValid moves: $VALID_MOVES\n\n$GAME_HISTORY"
             })
 
       - name: Update readme link and commit changes
