@@ -28,7 +28,7 @@ jobs:
           pip install -r scripts/requirements.txt
 
           # delete all other chessboard images
-          rm chessboard*.png
+          rm -f games/game${{ github.event.issue.number }}/chessboard*.png
 
           # generate new chessboard image and export .env variables
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
@@ -46,13 +46,13 @@ jobs:
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
-          mv images/chessboard.png images/chessboard$TIMESTAMP.png 
+          mv chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
 
           # update image link in readme
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)[^\" ]*|\1$TIMESTAMP.png|g" README.md
 
           # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+          echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
       - name: Update issue
         if: ${{ env.MOVE_STATUS == 'valid' }}
@@ -70,7 +70,7 @@ jobs:
             <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
             </div>
 
-            ### There are ${ validMovesCount } valid moves for ${{ env.WHICH_TURN }}:
+            ### There are ${ validMovesCount } legal moves for ${{ env.WHICH_TURN }}:
             > ${{ env.VALID_MOVES }}
 
             <details>
