@@ -3,7 +3,6 @@ name: Chess Workflow
 on:
   issue_comment:
     types: [created]
-    issues: [1]
 
 jobs:
   Make-a-move:
