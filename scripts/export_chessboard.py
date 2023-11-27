@@ -17,15 +17,15 @@ settings = {
         "border_size": 2,
         "border_color": "#161618",
         "annotation_color": "#161618",
-        # hardcoded until I figure out how to calculate this
+        # hardcoded until I figure out how to calculate this
         "annotation_offset_numbers": 28,
         "annotation_offset_letters": 20,
     },
-    "pieces_path": "images/pieces/",
-    "output_path": "images/chessboard.png",
+    "pieces_path": "pieces/",
+    "games_dir": "games/",
+    "output_path": "chessboard.png",
     "piece_size_ratio": 0.125,
     "piece_offset_ratio": 0.5,
-    "pgn_file_path": "pgn.txt",
     "env_file": ".env",
     "start_fen": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
 }
@@ -136,7 +136,8 @@ def add_border(draw):
 
 
 def add_annotations(draw, is_white_bottom):
-    """Adds annotations (letters and numbers) to the chessboard based on the position of the bottom player.
+    """Adds annotations (letters and numbers) to the chessboard based on the position
+    of the bottom player.
 
     Args:
         draw (PIL.ImageDraw.Draw): The drawing context.
@@ -175,16 +176,16 @@ def add_annotations(draw, is_white_bottom):
         )
 
 
-def export_chessboard(board, is_white_bottom=True):
-    """Generates and exports a chessboard image based on the provided board and the position of the bottom player.
+def export_chessboard(board, is_white_bottom=True, custom_path=None):
+    """Generates and exports a chessboard image based on the provided board
+    and the position of the bottom player.
 
     Args:
         board (chess.Board): The chess board object.
-        is_white_bottom (bool, optional): Flag indicating if the white player is at the bottom. Defaults to True.
+        is_white_bottom (bool, optional): Flag indicating if the white player
+        is at the bottom. Defaults to True.
     """
     image, draw = create_chessboard()
-
-    is_white_bottom = board.turn == chess.WHITE
 
     if not is_white_bottom:
         flipped_board = chess.Board(board.fen())
@@ -196,7 +197,10 @@ def export_chessboard(board, is_white_bottom=True):
     add_border(draw)
     add_annotations(draw, is_white_bottom)
 
-    image.save(settings["output_path"])
+    if custom_path:
+        image.save(custom_path)
+    else:
+        image.save(settings["output_path"])
 
 
 def make_move(board, san_move):
@@ -221,11 +225,11 @@ def make_move(board, san_move):
         return False
 
 
-def reset_game():
+def reset_game(game_number):
     """Resets the game to the starting position."""
     board = chess.Board(settings["start_fen"])
 
-    initialize_pgn()
+    initialize_pgn(game_number)
     export_chessboard(board)
 
 
@@ -249,7 +253,9 @@ def game_end_status(board):
         board (chess.Board): The chess board object.
 
     Returns:
-        str or None: The status of the game ('white_wins', 'black_wins', 'draw', 'stalemate', 'insufficient_material', 'threefold_repetition') or "in_progress" if the game is ongoing.
+        str or None: The status of the game ('white_wins', 'black_wins', 'draw',
+        'stalemate', 'insufficient_material', 'threefold_repetition') or "in_progress"
+        if the game is ongoing.
     """
     if board.is_game_over():
         if board.is_checkmate():
@@ -268,40 +274,56 @@ def game_end_status(board):
     return "in_progress"
 
 
-def initialize_pgn():
+def initialize_pgn(game_number):
     """Initializes the PGN file with default headers for a new game."""
     try:
         game = chess.pgn.Game()
         game.headers["Event"] = "Chess Game"
         game.headers["Site"] = "https://github.com/thieleju"
         game.headers["Date"] = datetime.datetime.now().strftime("%Y.%m.%d")
-        game.headers["Round"] = "1"
+        game.headers["Round"] = f"Game {game_number}"
         game.headers["White"] = "Player 1"
         game.headers["Black"] = "Player 2"
 
-        with open(settings["pgn_file_path"], "w", encoding="utf8") as file:
+        # create directory if it doesn't exist
+        if not os.path.exists(settings["games_dir"]):
+            os.makedirs(settings["games_dir"])
+
+        # creat directory for game if it doesn't exist
+        if not os.path.exists(f'{settings["games_dir"]}game{game_number}'):
+            os.makedirs(f'{settings["games_dir"]}game{game_number}')
+
+        path = get_pgn_path(game_number)
+        with open(path, "w", encoding="utf8") as file:
             file.write(str(game))
+
+        print(f"PGN file initialized for game {game_number} at {path}")
     except Exception as e:
         print(f"Error initializing PGN file: {e}")
 
 
-def update_pgn_with_move(san_move, username):
-    """Updates the PGN file with the provided move in SAN notation and the username as a comment for the move.
+def update_pgn_with_move(san_move, username, game_number):
+    """Updates the PGN file with the provided move in SAN notation and the
+    username as a comment for the move.
 
     Args:
         san_move (str): The move in Standard Algebraic Notation (SAN).
         username (str): The username of the player making the move.
+        game_number (int): The number of the game to update.
     """
     try:
-        if not os.path.exists(settings["pgn_file_path"]):
-            initialize_pgn()
+        path = get_pgn_path(game_number)
 
-        with open(settings["pgn_file_path"], "r+", encoding="utf8") as file:
+        if not os.path.exists(path):
+            initialize_pgn(game_number)
+
+        print(f"Updating PGN file for game {game_number} at {path}")
+        with open(path, "r+", encoding="utf8") as file:
             game = chess.pgn.read_game(file)
             if game is None:
                 file.seek(0)
                 file.truncate()
-                initialize_pgn()
+                initialize_pgn(game_number)
                 file.seek(0)
                 game = chess.pgn.read_game(file)
 
@@ -317,11 +339,14 @@ def update_pgn_with_move(san_move, username):
             file.write(str(game))
             file.truncate()
     except Exception as e:
-        print(f"Error updating PGN with move: {e}")
+        print(f"Error updating PGN: {e}")
 
 
-def load_game_from_pgn():
+def load_game_from_pgn(game_number):
     """Loads a game from a PGN file and returns the board object.
+
+    Args:
+        game_number (int): The number of the game to load.
 
     Returns:
         chess.Board: The chess board object representing the game.
@@ -329,10 +354,11 @@ def load_game_from_pgn():
         ValueError: If the PGN content is invalid.
     """
     try:
-        if not os.path.exists(settings["pgn_file_path"]):
-            initialize_pgn()
+        path = get_pgn_path(game_number)
+        if not os.path.exists(path):
+            initialize_pgn(game_number)
 
-        with open(settings["pgn_file_path"], encoding="utf8") as file:
+        with open(path, "r", encoding="utf8") as file:
             game = chess.pgn.read_game(file)
             if game is None:  # Invalid PGN content
                 raise ValueError("Invalid PGN content")
@@ -345,16 +371,20 @@ def load_game_from_pgn():
         return chess.Board()
 
 
-def get_moves_and_users_from_pgn():
+def get_moves_and_users_from_pgn(game_number):
     """
     Returns the moves and users from the PGN file.
+
+    Args:
+        game_number (int): The number of the game to load.
 
     Returns:
         list: The list of moves in the format (move_number, san_move, username)
     """
     moves_with_users = []
     try:
-        with open(settings["pgn_file_path"], encoding="utf8") as file:
+        path = get_pgn_path(game_number)
+        with open(path, "r", encoding="utf8") as file:
             game = chess.pgn.read_game(file)
             node = game
             move_number = 0
@@ -410,53 +440,159 @@ def save_env_variables_to_file(**kwargs):
         file_path = settings["env_file"]
         with open(file_path, "w", encoding="utf8") as env_file:
             for key, value in kwargs.items():
-                env_file.write(f'{key}={value}\n')
+                env_file.write(f"{key}={value}\n")
+                print(f"{key}\t", value)
         print(f"Environment variables saved to {file_path} successfully.")
     except Exception as e:
-        print(f"Error saving environment variables to {file_path}: {e}")
+        print(f"Error saving environment variables: {e}")
+
+
+def save_board_image(board, username, game_number):
+    """Saves the chessboard image in the game directory and names it based
+    on the move number and player.
+
+    Args:
+        board (chess.Board): The chess board object.
+        username (str): The username of the player making the move.
+        game_number (int): The number representing the game.
+    """
+    games_dir_settings = settings["games_dir"]
+    game_dir = f"{games_dir_settings}/game{game_number}"
+
+    # create games directory subfolder
+    os.makedirs(game_dir, exist_ok=True)
+
+    # Get the correct orientation of the board based on the player
+    was_whites_turn = board.turn == chess.WHITE
+
+    # Export the chessboard image with the appropriate orientation to the default location
+    export_chessboard(board, was_whites_turn)
+
+    # Define the filename based on move number and player
+    move_number = str(board.fullmove_number).zfill(3)
+    player = "0" if not was_whites_turn else "1"
+    move_number = str(move_number).zfill(3)
+    file_name = f"move-{move_number}-{player}-{username}.png"
+
+    # Copy the generated image to the game directory
+    image_path = os.path.join(game_dir, file_name)
+
+    # generate second board image if it was black's turn for later gifs
+    # or copy already created image to image_path
+    if not was_whites_turn:
+        export_chessboard(board, True, custom_path=image_path)
+    else:
+        Image.open(settings["output_path"]).save(image_path)
+
+
+def create_gif_from_images(input_folder, output_gif):
+    """Creates a GIF from images in a folder.
+
+    Args:
+        input_folder (str): The path to the folder containing images.
+        output_gif (str): The path to save the output GIF.
+    """
+    images = []
+    # Load all images in the folder
+    for filename in sorted(os.listdir(input_folder)):
+        if filename.endswith(".png") or filename.endswith(".jpg"):
+            image_path = os.path.join(input_folder, filename)
+            images.append(Image.open(image_path))
+
+    # Save as a GIF
+    images[0].save(
+        output_gif, save_all=True, append_images=images[1:], duration=800, loop=1
+    )
+
+
+def get_pgn_path(game_number):
+    """Returns the path to the PGN file for the given game number.
+
+    Args:
+        game_number (int): The number representing the game.
+
+    Returns:
+        str: The path to the PGN file.
+    """
+    return f'{settings["games_dir"]}game{game_number}/pgn.txt'
+
+
+def generate_images_for_all_moves(game_number):
+    """Generates images for all moves in the game.
+
+    Args:
+        game_number (int): The number representing the game.
+    """
+    board = chess.Board()
+    moves_with_users = get_moves_and_users_from_pgn(game_number)
+
+    print(moves_with_users)
+    for move_number, san_move, username in moves_with_users:
+        print(move_number, san_move, username)
+        make_move(board, san_move)
+
+        was_whites_turn = board.turn == chess.WHITE
+        game_dir = f'{settings["games_dir"]}game{game_number}'
+        player = "0" if not was_whites_turn else "1"
+        move_number_2 = str(move_number).zfill(3)
+        file_name = f"move-{move_number_2}-{player}-{username}.png"
+
+        print(file_name)
+        image_path = os.path.join(game_dir, file_name)
+
+        export_chessboard(board, True, custom_path=image_path)
 
 
 if __name__ == "__main__":
     # If no parameter is passed, reset the game
-    if len(sys.argv) < 3:
-        reset_game()
+    if len(sys.argv) == 1:
+        reset_game(1)
         sys.exit(0)
 
-    move = sys.argv[1]
-    username = sys.argv[2]
+    # if invalid amount of parameters are passed, exit
+    if len(sys.argv) != 4:
+        print("Invalid amount of parameters passed.")
+        sys.exit(1)
+
+    MOVE = sys.argv[1]
+    USERNAME = sys.argv[2]
+    GAME_NUMBER = sys.argv[3]
 
     # initialize the board with the moves from the pgn
-    current_board = load_game_from_pgn()
+    current_board = load_game_from_pgn(GAME_NUMBER)
 
     # make move based on the parameter passed
-    is_move_valid = make_move(current_board, move)
+    IS_MOVE_VALID = make_move(current_board, MOVE)
 
-    moves = ", ".join([current_board.san(move) for move in current_board.legal_moves])
-    status = game_end_status(current_board)
-    turn = "white" if current_board.turn == chess.WHITE else "black"
-    move_status = "valid" if is_move_valid else "invalid"
+    MOVES = ", ".join([current_board.san(move) for move in current_board.legal_moves])
+    TURN = "white" if current_board.turn == chess.WHITE else "black"
+    MOVE_STATUS = "valid" if IS_MOVE_VALID else "invalid"
+    GAME_STATUS = game_end_status(current_board)
 
     # save PGN to file
-    if is_move_valid:
-        update_pgn_with_move(move, username)
+    if IS_MOVE_VALID:
+        update_pgn_with_move(MOVE, USERNAME, GAME_NUMBER)
 
-    game_history = get_moves_and_users_from_pgn()
-    game_history_formatted = format_moves(game_history)
+    game_history = get_moves_and_users_from_pgn(GAME_NUMBER)
+    GAME_HISTORY_FORMATTED = format_moves(game_history)
 
     # set the environment variables
     save_env_variables_to_file(
-        GAME_STATUS=status,
-        MOVE_STATUS=move_status,
-        WHICH_TURN=turn,
-        VALID_MOVES=moves,
-        GAME_HISTORY=game_history_formatted,
+        GAME_STATUS=GAME_STATUS,
+        MOVE_STATUS=MOVE_STATUS,
+        WHICH_TURN=TURN,
+        GAME_NUMBER=GAME_NUMBER,
+        VALID_MOVES=MOVES,
+        GAME_HISTORY=GAME_HISTORY_FORMATTED,
     )
 
-    print("GAME_STATUS\t", status)
-    print("MOVE_STATUS\t", move_status)
-    print("WHICH_TURN\t", turn)
-    print("VALID_MOVES\t", moves)
-    print("GAME_HISTORY\t", game_history_formatted)
-
     # Export the chessboard image
-    export_chessboard(current_board)
+    if IS_MOVE_VALID:
+        save_board_image(current_board, USERNAME, GAME_NUMBER)
+
+        # create gif from images
+        base_path = settings["games_dir"] + f"/game{GAME_NUMBER}"
+        create_gif_from_images(
+            base_path,
+            f"{base_path}/game.gif",
+        )
