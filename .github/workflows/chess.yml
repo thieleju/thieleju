@@ -46,7 +46,7 @@ jobs:
           env 
 
           # export environment variables from .env file
-          export $(grep -v '^#' .env | xargs)
+          export $(grep -v '^#' .env | sed 's/^/export /')
 
           env 
           # rename file to chessboard.png + timestamp
