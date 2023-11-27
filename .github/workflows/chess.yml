@@ -36,19 +36,17 @@ jobs:
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
           # export environment variables from .env file
-          while IFS= read -r line; do
-            eval "export $line"
-          done < <(grep -v '^#' .env)
+          grep -v '^#' .env | xargs -d '\n' -I '$' echo '$' >> $GITHUB_ENV
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv images/chessboard.png images/chessboard$TIMESTAMP.png 
 
-          # update image link in readme
-          sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)[^\" ]*|\1$TIMESTAMP.png|g" README.md
-
           # add Filename to github_env
           echo "CHESSBOARD_FILENAME=images/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+
+          # update image link in readme
+          sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/chessboard\)[^\" ]*|\1$TIMESTAMP.png|g" README.md
 
       - name: Edit issue
         uses: actions/github-script@v7
