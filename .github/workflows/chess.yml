@@ -3,6 +3,7 @@ name: Chess Workflow
 on:
   issue_comment:
     types: [created]
+  workflow_dispatch: # Able to manually trigger workflow (it will fail)
 
 jobs:
   Make-a-move:
