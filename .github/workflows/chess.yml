@@ -36,11 +36,11 @@ jobs:
           python scripts/export_chessboard.py $COMMENT_BODY @${{ github.event.comment.user.login }}
 
           # read env variable from python script
-          source .env
-          env 
-          echo "test:" 
-
-          cat .env > .env
+          # source .env
+          export $(grep -v '^#' .env | xargs) 
+          # echo "test:" 
+          #
+          # cat .env > .env
           env
 
           echo "GAME_STATUS: ${{ secrets.GAME_STATUS }}"
