@@ -39,7 +39,8 @@ jobs:
             eval "export $line"
           done < <(grep -v '^#' .env)
 
-          echo "Move status:"${{ env.MOVE_STATUS }}
+          echo "Move status:${{ env.MOVE_STATUS }}"
+          echo "Move status: $MOVE_STATUS"
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
