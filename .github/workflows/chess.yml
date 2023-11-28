@@ -36,7 +36,7 @@ jobs:
 
           # export environment variables from .env file
           while IFS= read -r line; do
-            echo "$line" >> $GITHUB_ENV
+            eval "export $line"
           done < <(grep -v '^#' .env)
 
           # Check for MOVE_STATUS and exit if it's "invalid"
