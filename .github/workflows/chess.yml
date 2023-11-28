@@ -46,7 +46,7 @@ jobs:
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
-          mv chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
+          mv -f chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
 
           # update image link in readme
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/games/game1/chessboard\)[^-]*-[^.]*.png|\1$TIMESTAMP.png|g" README.md
