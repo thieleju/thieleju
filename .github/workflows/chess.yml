@@ -42,7 +42,7 @@ jobs:
 
           echo "MOVE_STATUS: $MOVE_STATUS"
           echo "MOVE_STATUS: ${{ env.MOVE_STATUS }}"
-          echo "github_env: $GITHUB_ENV"
+          cat $GITHUB_ENV
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
@@ -69,7 +69,7 @@ jobs:
           git push origin HEAD
 
       - name: Update issue
-        if: ${{ env.MOVE_STATUS == 'valid' }}
+        # if: ${{ env.MOVE_STATUS == 'valid' }}
         uses: actions/github-script@v7
         with:
           script: |
