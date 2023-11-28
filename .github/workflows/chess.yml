@@ -34,6 +34,8 @@ jobs:
           # parameters: comment_body, comment_author, game_number
           python scripts/export_chessboard.py "$COMMENT_BODY" @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
 
+          cat .env
+
           # export environment variables from .env file
           while IFS= read -r line; do
             echo "$line" >> $GITHUB_ENV
