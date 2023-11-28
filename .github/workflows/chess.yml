@@ -4,11 +4,6 @@ on:
   issue_comment:
     types: [created]
 
-env:
-  chessboardFolder: "games/game${{ github.event.issue.number }}"
-  chessboardBaseURL: "https://raw.githubusercontent.com/thieleju/thieleju/main"
-  issueLink: "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"
-
 jobs:
   Make-a-move:
     runs-on: ubuntu-latest
@@ -44,10 +39,7 @@ jobs:
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          echo $MOVE_STATUS
-          cat .env
-
-          env
+          echo "Move status: ${{ env.MOVE_STATUS }}"
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ $MOVE_STATUS = "invalid" ]; then
@@ -57,16 +49,16 @@ jobs:
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
-          mv -f chessboard.png ${{env.chessboardFolder}}/chessboard$TIMESTAMP.png 
+          mv -f chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
 
           # update image link in readme
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/games/game1/chessboard\)[^-]*-[^.]*.png|\1$TIMESTAMP.png|g" README.md
 
           # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=${{ env.chessboardFolder }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+          echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
           # parameters: moves, image_url, link_url
-          python scripts/update_readme.py "$GAME_HISTORY" ${{ env.chessboardBaseURL }}"/$CHESSBOARD_FILENAME" ${{ env.issueLink }}  
+          python scripts/update_readme.py "$GAME_HISTORY" "https://raw.githubusercontent.com/thieleju/thieleju/main/$CHESSBOARD_FILENAME" "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"  
 
           # commit changes
           git config --global user.email "actions@github.com"
