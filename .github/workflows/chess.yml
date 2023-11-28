@@ -44,8 +44,6 @@ jobs:
           echo "MOVE_STATUS: ${{ env.MOVE_STATUS }}"
           echo "github_env: $GITHUB_ENV"
 
-          env
-
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
             echo "Move is invalid, but continuing with the next steps."
@@ -107,7 +105,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            if ("${{ env.MOVE_STATUS }}" == 'valid') {
+            if (${{ env.MOVE_STATUS }} == 'valid') {
               await github.rest.reactions.createForIssueComment({
                 comment_id: "${{ github.event.comment.id }}",
                 owner: context.repo.owner,
