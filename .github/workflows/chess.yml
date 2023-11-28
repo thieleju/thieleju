@@ -42,8 +42,9 @@ jobs:
 
           echo "MOVE_STATUS: $MOVE_STATUS"
           echo "MOVE_STATUS: ${{ env.MOVE_STATUS }}"
+          echo "github_env: $GITHUB_ENV"
 
-          echo ${{env}}
+          env
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
