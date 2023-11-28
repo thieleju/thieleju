@@ -58,7 +58,7 @@ jobs:
           echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
           # parameters: moves, image_url, link_url
-          python scripts/update_readme.py "$GAME_HISTORY" "https://raw.githubusercontent.com/thieleju/thieleju/main/$CHESSBOARD_FILENAME" "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"  
+          # python scripts/update_readme.py "$GAME_HISTORY" "https://raw.githubusercontent.com/thieleju/thieleju/main/$CHESSBOARD_FILENAME" "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"  
 
           # commit changes
           git config --global user.email "actions@github.com"
