@@ -48,6 +48,8 @@ jobs:
           echo "Move status: $MOVE_STATUS"
           echo "Move status:"${{ env.MOVE_STATUS }}
 
+          env
+
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv -f chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
