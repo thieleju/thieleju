@@ -39,13 +39,13 @@ jobs:
             eval "export $line"
           done < <(grep -v '^#' .env)
 
+          echo "Move status:"${{ env.MOVE_STATUS }}
+
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
             echo "Move is invalid, but continuing with the next steps."
-            exit 1
+            exit 0
           fi
-
-          echo "Move status:"${{ env.MOVE_STATUS }}
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
