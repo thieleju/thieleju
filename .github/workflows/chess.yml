@@ -36,7 +36,7 @@ jobs:
 
           # export environment variables from .env file
           while IFS= read -r line; do
-            eval "export $line"
+            # eval "export $line"
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
