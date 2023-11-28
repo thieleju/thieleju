@@ -50,6 +50,8 @@ jobs:
             exit 1
           fi
 
+          ls -la
+
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv -f chessboard.png $chessboardFolder/chessboard$TIMESTAMP.png 
