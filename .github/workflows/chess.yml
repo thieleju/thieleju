@@ -4,17 +4,17 @@ on:
   issue_comment:
     types: [created]
 
+env:
+  chessboardFolder: "games/game${{ github.event.issue.number }}/chessboard"
+  chessboardBaseURL: "https://raw.githubusercontent.com/thieleju/thieleju/main"
+  issueLink: "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"
+
 jobs:
   Make-a-move:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        env:
-          chessboardFolder: "games/game${{ github.event.issue.number }}/chessboard"
-          chessboardBaseURL: "https://raw.githubusercontent.com/thieleju/thieleju/main"
-          chessboardGifURL: "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
-          issueLink: "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"
 
       - name: Get chess move notation from comment
         run: |
@@ -79,6 +79,7 @@ jobs:
         with:
           script: |
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
+            const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
             const issueBody = `
             ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
             > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
@@ -93,7 +94,7 @@ jobs:
             <details>
               <summary>Show Move History</summary><br>
               <div>
-                <img width="350" src="${{ env.chessboardGifURL }}" \>
+                <img width="350" src="${gifUrl}" \>
               </div>
               ${moveHistory}
             </details>
