@@ -36,17 +36,11 @@ jobs:
 
           # export environment variables from .env file
           while IFS= read -r line; do
-            # eval "export $line"
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          echo "MOVE_STATUS: $MOVE_STATUS"
-          echo "MOVE_STATUS: ${{ env.MOVE_STATUS }}"
-          cat $GITHUB_ENV
-
-          # Check for MOVE_STATUS and exit if it's "invalid"
-          if [ "$MOVE_STATUS" = "invalid" ]; then
-            echo "Move is invalid, but continuing with the next steps."
+          if [ ! -f "chessboard.png" ]; then
+            echo "Move Invalid, no chessboard.png file generated"
             exit 0
           fi
 
@@ -112,11 +106,18 @@ jobs:
                 repo: context.repo.repo,
                 content: '+1'
               })
-            } else {
+            } else if(${{ env.MOVE_STATUS }} == 'invalid') {
               await github.rest.reactions.createForIssueComment({
                 comment_id: "${{ github.event.comment.id }}",
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 content: 'confused'
+              })
+            } else {
+              await github.rest.reactions.createForIssueComment({
+                comment_id: "${{ github.event.comment.id }}",
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                content: 'eyes'
               })
             }
