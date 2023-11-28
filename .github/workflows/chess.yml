@@ -34,15 +34,10 @@ jobs:
           # parameters: comment_body, comment_author, game_number
           python scripts/export_chessboard.py "$COMMENT_BODY" @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
 
-          cat .env
-
           # export environment variables from .env file
           while IFS= read -r line; do
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
-
-          echo "Move status: ${{ env.MOVE_STATUS }}"
-          echo "Move status: $MOVE_STATUS"
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ -n "$MOVE_STATUS" ] && [ "$MOVE_STATUS" = "invalid" ]; then
