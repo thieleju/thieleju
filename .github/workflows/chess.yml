@@ -54,16 +54,16 @@ jobs:
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
-          mv -f chessboard.png $chessboardFolder/chessboard$TIMESTAMP.png 
+          mv -f chessboard.png ${{env.chessboardFolder}}/chessboard$TIMESTAMP.png 
 
           # update image link in readme
           sed -i "s|\(https://raw.githubusercontent.com/thieleju/thieleju/main/images/games/game1/chessboard\)[^-]*-[^.]*.png|\1$TIMESTAMP.png|g" README.md
 
           # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=$chessboardFolder/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+          echo "CHESSBOARD_FILENAME=${{ env.chessboardFolder }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
           # parameters: moves, image_url, link_url
-          python scripts/update_readme.py "$GAME_HISTORY" "$chessboardBaseURL/$CHESSBOARD_FILENAME" "$issueLink"  
+          python scripts/update_readme.py "$GAME_HISTORY" ${{ env.chessboardBaseURL }}"/$CHESSBOARD_FILENAME" ${{ env.issueLink }}  
 
           # commit changes
           git config --global user.email "actions@github.com"
