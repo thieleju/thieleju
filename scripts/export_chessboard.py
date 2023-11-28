@@ -440,7 +440,7 @@ def save_env_variables_to_file(**kwargs):
         file_path = settings["env_file"]
         with open(file_path, "w", encoding="utf8") as env_file:
             for key, value in kwargs.items():
-                env_file.write(f"{key}={value}\n")
+                env_file.write(f"{key}='{value}'\n")
                 print(f"{key}\t", value)
         print(f"Environment variables saved to {file_path} successfully.")
     except Exception as e:
