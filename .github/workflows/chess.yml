@@ -5,7 +5,7 @@ on:
     types: [created]
 
 env:
-  chessboardFolder: "games/game${{ github.event.issue.number }}/chessboard"
+  chessboardFolder: "games/game${{ github.event.issue.number }}"
   chessboardBaseURL: "https://raw.githubusercontent.com/thieleju/thieleju/main"
   issueLink: "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"
 
