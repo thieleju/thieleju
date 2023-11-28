@@ -40,8 +40,10 @@ jobs:
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          echo "MOVE_STATUS=$MOVE_STATUS"
-          echo ${{ env.MOVE_STATUS }}
+          echo "MOVE_STATUS: $MOVE_STATUS"
+          echo "MOVE_STATUS: ${{ env.MOVE_STATUS }}"
+
+          echo ${{env}}
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ "$MOVE_STATUS" = "invalid" ]; then
