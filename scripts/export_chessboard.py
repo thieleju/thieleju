@@ -549,11 +549,6 @@ if __name__ == "__main__":
         reset_game(1)
         sys.exit(0)
 
-    # if invalid amount of parameters are passed, exit
-    if len(sys.argv) != 4:
-        print("Invalid amount of parameters passed.")
-        sys.exit(1)
-
     MOVE = sys.argv[1]
     USERNAME = sys.argv[2]
     GAME_NUMBER = sys.argv[3]
