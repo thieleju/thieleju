@@ -45,14 +45,14 @@ jobs:
           done < <(grep -v '^#' .env)
 
           echo "MOVE_STATUS = ${{ env.MOVE_STATUS }}"
+          echo $MOVE_STATUS
+          cat .env
 
           # Check for MOVE_STATUS and exit if it's "invalid"
           if [ ${{ env.MOVE_STATUS }} = "invalid" ]; then
             echo "Move is invalid, but continuing with the next steps."
             exit 1
           fi
-
-          ls -la
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
