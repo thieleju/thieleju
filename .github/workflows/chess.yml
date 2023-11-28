@@ -45,6 +45,8 @@ jobs:
             exit 1
           fi
 
+          cat .env
+
           echo "Move status: $MOVE_STATUS"
           echo "Move status:"${{ env.MOVE_STATUS }}
 
