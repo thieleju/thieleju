@@ -1,6 +1,5 @@
 import sys
 
-
 def update_readme(chess_moves, image_url, image_link):
     """
     Updates the README.md file with a new table containing the last 10 chess moves and an image.
@@ -28,11 +27,15 @@ def update_readme(chess_moves, image_url, image_link):
         moves = chess_moves.split("|")[-10:]  # Select only the last 10 moves
         for move in moves:
             move_parts = move.split(", ")
-            move_number, white_move, black_move = move_parts[0].split('.')[0], move_parts[0].split('.')[1].strip(), move_parts[1]
+            move_number = move_parts[0].split('.')[0]
+            if len(move_parts) == 2:
+                white_move, black_move = move_parts[0].split('.')[1].strip(), move_parts[1]
+            else:
+                white_move, black_move = move_parts[0].split('.')[1].strip(), ''
 
             white_parts, black_parts = white_move.split(' '), black_move.split(' ')
             white_username = f'<a href="https://github.com/{white_parts[1][1:]}">{white_parts[1]}</a>'
-            black_username = f'<a href="https://github.com/{black_parts[1][1:]}">{black_parts[1]}</a>'
+            black_username = f'<a href="https://github.com/{black_parts[1][1:]}">{black_parts[1]}</a>' if len(black_parts) > 1 else ''
 
             new_table.append(
                 f"<tr>\n<td>{move_number}</td>\n<td>{white_parts[0]} {white_username}</td>\n<td>{black_parts[0]} {black_username}</td>\n</tr>\n"
@@ -47,6 +50,8 @@ def update_readme(chess_moves, image_url, image_link):
             file.writelines(readme)
     else:
         print("Could not find table in README.md")
+
+
 
 
 def generate_table(chess_moves, image_url, image_link):
