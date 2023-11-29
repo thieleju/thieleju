@@ -19,7 +19,7 @@ def update_readme(chess_moves, image_url, image_link):
     if table_start != -1 and table_end != -1:
         new_table = [
             '<table border="1">\n',
-            f'<th rowspan="20"><a href="{image_link}"><img src="{image_url}" /></a></th>\n',
+            f'<th rowspan="20"><a href="{image_link}"><img width="480" src="{image_url}" /></a></th>\n',
             '<th colspan="3">Last 10 moves</th>\n',
             "<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n"
         ]
