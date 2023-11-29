@@ -27,9 +27,6 @@ jobs:
           # Install dependencies
           pip install -r scripts/requirements.txt
 
-          # delete all other chessboard images
-          rm -f games/game${{ github.event.issue.number }}/chessboard*.png
-
           # generate new chessboard image and export .env variables
           # parameters: comment_body, comment_author, game_number
           python scripts/export_chessboard.py "$COMMENT_BODY" @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
@@ -43,6 +40,9 @@ jobs:
             echo "Move Invalid, no chessboard.png file generated"
             exit 0
           fi
+
+          # delete all other chessboard images
+          rm -f games/game${{ github.event.issue.number }}/chessboard*.png
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
