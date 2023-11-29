@@ -14,39 +14,34 @@ def update_readme(chess_moves, image_url, image_link):
         readme = file.readlines()
 
     # Find the start and end index of the table
-    start_index = -1
-    end_index = -1
-    for i, line in enumerate(readme):
-        if '<table border="1">' in line:
-            start_index = i
-        if "</table>" in line:
-            end_index = i + 1
-            break
+    table_start = next((i for i, line in enumerate(readme) if '<table border="1">' in line), -1)
+    table_end = next((i for i, line in enumerate(readme) if "</table>" in line), -1)
 
-    if start_index != -1 and end_index != -1:
-        # Generate the new table content
-        new_table = []
-        new_table.append('<table border="1">\n')
-        new_table.append(
-            f'<th rowspan="20"><a href="{image_link}"><img src="{image_url}" /></a></th>\n'
-        )
-        new_table.append('<th colspan="3">Last 10 moves</th>\n')
-        new_table.append("<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n")
+    if table_start != -1 and table_end != -1:
+        new_table = [
+            '<table border="1">\n',
+            f'<th rowspan="20"><a href="{image_link}"><img src="{image_url}" /></a></th>\n',
+            '<th colspan="3">Last 10 moves</th>\n',
+            "<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n"
+        ]
 
         moves = chess_moves.split("|")[-10:]  # Select only the last 10 moves
         for move in moves:
             move_parts = move.split(", ")
-            move_number = move_parts[0].split(".")[0]
-            white_move = move_parts[0].split(".")[1].strip()
-            black_move = move_parts[1]
+            move_number, white_move, black_move = move_parts[0].split('.')[0], move_parts[0].split('.')[1].strip(), move_parts[1]
+
+            white_parts, black_parts = white_move.split(' '), black_move.split(' ')
+            white_username = f'<a href="https://github.com/{white_parts[1][1:]}">{white_parts[1]}</a>'
+            black_username = f'<a href="https://github.com/{black_parts[1][1:]}">{black_parts[1]}</a>'
+
             new_table.append(
-                f"<tr>\n<td>{move_number}</td>\n<td>{white_move}</td>\n<td>{black_move}</td>\n</tr>\n"
+                f"<tr>\n<td>{move_number}</td>\n<td>{white_parts[0]} {white_username}</td>\n<td>{black_parts[0]} {black_username}</td>\n</tr>\n"
             )
 
         new_table.append("</table>\n")
 
         # Update the README content
-        readme[start_index:end_index] = new_table
+        readme[table_start:table_end + 1] = new_table
 
         with open("README.md", "w") as file:
             file.writelines(readme)
