@@ -15,7 +15,7 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 ### ✨ Play chess by commenting on [this issue!](https://github.com/thieleju/thieleju/issues/1) (WIP)
 
 <table border="1">
-<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1701380763.png" /></a></th>
+<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1701380853.png" /></a></th>
 <th colspan="3">Last 10 moves</th>
 <tr>
 <th>#</th>
@@ -70,6 +70,6 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 <tr>
 <td>18</td>
 <td>Bd6 <a href="https://github.com/thieleju">@thieleju</a></td>
-<td> </td>
+<td>Rae8 <a href="https://github.com/thieleju">@thieleju</a></td>
 </tr>
 </table>
