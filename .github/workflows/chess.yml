@@ -52,6 +52,7 @@ jobs:
           echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
       - name: Commit changes
+        if: ${{ env.MOVE_STATUS == 'valid' }}
         run: |
           # parameters: moves, image_url, link_url
           python scripts/update_readme.py "${{ env.GAME_HISTORY }}" "https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}"  
@@ -76,7 +77,7 @@ jobs:
             > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
 
             <div>
-            <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
+              <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
             </div>
 
             ### Legal moves for ${{ env.WHICH_TURN }}:
