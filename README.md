@@ -73,3 +73,5 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 <td>Rae8 <a href="https://github.com/thieleju">@thieleju</a></td>
 </tr>
 </table>
+
+### ♟️ Legal Moves
