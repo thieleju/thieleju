@@ -469,7 +469,11 @@ def save_board_image(board, username, game_number):
     export_chessboard(board, was_whites_turn)
 
     # Define the filename based on move number and player
-    move_number = str(board.fullmove_number).zfill(3)
+    if was_whites_turn:
+        move_number = board.fullmove_number - 1
+    else:
+        move_number = board.fullmove_number
+    
     player = "0" if not was_whites_turn else "1"
     move_number = str(move_number).zfill(3)
     file_name = f"move-{move_number}-{player}-{username}.png"
