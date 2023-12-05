@@ -11,9 +11,9 @@ settings = {
     "width": 500,
     "height": 500,
     "styling": {
-        "background": "#699292",
-        "dark": "#699292",
-        "light": "#e6f4f1",
+        "background": "#52796f",
+        "dark": "#52796f",
+        "light": "#cad2c5",
         "border_size": 2,
         "border_color": "#161618",
         "annotation_color": "#161618",
