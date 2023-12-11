@@ -71,9 +71,6 @@ def update_readme(chess_moves, image_url, issue_link, valid_moves):
                 # add legal moves
                 readme.extend([f"> {line}" for line in valid_moves.split("|")])
 
-        # append
-        readme.append(f"\n\n### ♟️ [Make a move]({issue_link})")
-
         with open("README.md", "w", encoding="utf8") as file:
             file.writelines(readme)
     else:
