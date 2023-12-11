@@ -1,14 +1,14 @@
 import sys
 
 
-def update_readme(chess_moves, image_url, image_link, valid_moves):
+def update_readme(chess_moves, image_url, issue_link, valid_moves):
     """
     Updates the README.md file with a new table containing the last 10 chess moves and an image.
 
     Args:
     - chess_moves (str): String containing chess moves separated by '|'.
     - image_url (str): URL of the image to be displayed in the table.
-    - image_link (str): URL to link when the image in the table is clicked.
+    - issue_link (str): URL to link when the image in the table is clicked.
     - valid_moves (str): String containing valid chess moves.
     """
     with open("README.md", "r", encoding="utf8") as file:
@@ -23,7 +23,7 @@ def update_readme(chess_moves, image_url, image_link, valid_moves):
     if table_start != -1 and table_end != -1:
         new_table = [
             '<table border="1">\n',
-            f'<th rowspan="20"><a href="{image_link}"><img width="480" src="{image_url}" /></a></th>\n',
+            f'<th rowspan="20"><a href="{issue_link}"><img width="480" src="{image_url}" /></a></th>\n',
             '<th colspan="3">Last 10 moves</th>\n',
             "<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n",
         ]
@@ -62,7 +62,7 @@ def update_readme(chess_moves, image_url, image_link, valid_moves):
             if "### ✨ Play chess by commenting on [this issue!]" in line:
                 readme[
                     i
-                ] = f"### ✨ Play chess by commenting on [this issue!]({image_link}) (WIP)\n"
+                ] = f"### ✨ Play chess by commenting on [this issue!]({issue_link}) (WIP)\n"
 
             if "### ♟️ Legal Moves" in line:
                 readme[i] = "### ♟️ Legal Moves\n"
@@ -70,6 +70,9 @@ def update_readme(chess_moves, image_url, image_link, valid_moves):
                 readme[i + 1 :] = []
                 # add legal moves
                 readme.extend([f"> {line}" for line in valid_moves.split("|")])
+
+        # append
+        readme.append(f"\n\n### ♟️ [Make a move]({issue_link})")
 
         with open("README.md", "w", encoding="utf8") as file:
             file.writelines(readme)
