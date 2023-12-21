@@ -15,17 +15,12 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 ### ✨ Play chess by commenting on [this issue!](https://github.com/thieleju/thieleju/issues/1) (WIP)
 
 <table border="1">
-<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1703175124.png" /></a></th>
+<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1703175196.png" /></a></th>
 <th colspan="3">Last 10 moves</th>
 <tr>
 <th>#</th>
 <th>White</th>
 <th>Black</th>
-</tr>
-<tr>
-<td>23</td>
-<td>Be5 <a href="https://github.com/Duke194">@Duke194</a></td>
-<td>fxe5 <a href="https://github.com/thieleju">@thieleju</a></td>
 </tr>
 <tr>
 <td>24</td>
@@ -72,7 +67,12 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 <td>dxe5 <a href="https://github.com/Duke194">@Duke194</a></td>
 <td>Qe4 <a href="https://github.com/thieleju">@thieleju</a></td>
 </tr>
+<tr>
+<td>33</td>
+<td>Bb3 <a href="https://github.com/Duke194">@Duke194</a></td>
+<td> </td>
+</tr>
 </table>
 
 ### ♟️ Legal Moves
-> Bg8, Bf7, Be6, Ba6, Bd5, Bb5, Bd3, Bb3, Be2, Ba2, Bf1, Kd1, Kc1, e6, h4, a4
+> Rg8, Re8, Rd8+, Rc8, Rb8, Ra8, Rf7, Rf6, Rf5, Rf4, Rf3, Rf2+, Rf1, Qa8, Qb7, Qg6, Qc6, Qf5, Qxe5, Qd5+, Qh4, Qg4, Qf4+, Qd4+, Qc4, Qb4, Qa4, Qf3, Qe3+, Qd3+, Qg2+, Qe2+, Qxc2+, Qh1, Qe1+, h6, g6, a6, b5, h5, g5, a5
