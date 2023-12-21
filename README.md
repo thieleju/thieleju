@@ -15,7 +15,7 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 ### ✨ Play chess by commenting on [this issue!](https://github.com/thieleju/thieleju/issues/1) (WIP)
 
 <table border="1">
-<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1703175660.png" /></a></th>
+<th rowspan="20"><a href="https://github.com/thieleju/thieleju/issues/1"><img width="480" src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1703175708.png" /></a></th>
 <th colspan="3">Last 10 moves</th>
 <tr>
 <th>#</th>
@@ -70,9 +70,9 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 <tr>
 <td>35</td>
 <td>c4 <a href="https://github.com/Duke194">@Duke194</a></td>
-<td> </td>
+<td>Qe3# <a href="https://github.com/thieleju">@thieleju</a></td>
 </tr>
 </table>
 
 ### ♟️ Legal Moves
-> Qa8, Qb7, Qg6, Qc6, Qf5, Qxe5, Qd5+, Qh4, Qg4, Qf4+, Qd4+, Qxc4, Qf3, Qe3#, Qd3+, Qg2+, Qe2+, Qxc2+, Qh1, Re3, Re2+, Rh1, Rg1, Rf1, Rd1+, Rc1, Rb1, Ra1, h6, g6, a6, b5, h5, g5, a5
+> 
