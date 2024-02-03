@@ -8,5 +8,5 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 </p>
 
 <p align="center">
-    View my dotfiles [here](https://github.com/thieleju/dotfiles)
+    View my dotfiles <a href="https://github.com/thieleju/dotfiles">here</a>
 </p>
