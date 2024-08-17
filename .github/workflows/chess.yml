@@ -41,7 +41,7 @@ jobs:
           fi
 
           # Get game number from .env
-          GAME_NUMBER="${{ env.GAME_NUMBER }}"
+          GAME_NUMBER=$(grep GAME_NUMBER .env | cut -d '=' -f2)
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
