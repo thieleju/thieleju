@@ -548,14 +548,19 @@ def generate_images_for_all_moves(game_number):
 
 
 if __name__ == "__main__":
-    # If no parameter is passed, reset the game
-    if len(sys.argv) == 1:
-        reset_game(1)
+    # If one argument is passed, reset the game and set game number to parameter
+    if len(sys.argv) == 2:
+        reset_game(sys.argv[1])
         sys.exit(0)
 
     MOVE = sys.argv[1]
-    USERNAME = sys.argv[2]
-    GAME_NUMBER = sys.argv[3]
+    USERNAME = "@" + sys.argv[2]
+
+    # Get the game number from the /games directory
+    GAME_NUMBER = 0
+    for game in os.listdir(settings["games_dir"]):
+        if game.startswith("game") and int(game[4:]) > GAME_NUMBER:
+            GAME_NUMBER = int(game[4:])
 
     # initialize the board with the moves from the pgn
     current_board = load_game_from_pgn(GAME_NUMBER)
