@@ -40,6 +40,8 @@ jobs:
             exit 1
           fi
 
+          cat .env
+
           # Get game number from .env
           GAME_NUMBER=$(grep GAME_NUMBER .env | cut -d '=' -f2)
 
@@ -91,6 +93,20 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
               body: replyBody
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['chess']
+            })
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
             });
 
       - name: Reply to issue (Game Ended)
@@ -145,5 +161,12 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              labels: ['chess', gameResultLabel]
+              labels: [gameResultLabel]
             })
+
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            });
