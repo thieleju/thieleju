@@ -135,4 +135,4 @@ def generate_table(chess_moves, image_url, image_link):
 
 
 if __name__ == "__main__":
-    update_readme(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
+    update_readme(sys.argv[1], sys.argv[2], sys.argv[3])
