@@ -1,8 +1,8 @@
-name: Chess Workflow on Issue Comment
+name: Chess Workflow on Issue
 
 on:
-  issue_comment:
-    types: [created]
+  issues:
+    types: [opened]
 
 jobs:
   Make-a-move:
@@ -11,10 +11,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Get chess move notation from comment
+      - name: Get chess move notation from issue
         run: |
-          echo "COMMENT_BODY=${{ github.event.comment.body }}" >> $GITHUB_ENV
-          echo "${{ github.event.comment.user.login }} wants to move ${{ github.event.comment.body }}"
+          echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -28,8 +27,8 @@ jobs:
           pip install -r scripts/requirements.txt
 
           # generate new chessboard image and export .env variables
-          # parameters: comment_body, comment_author, game_number
-          python scripts/export_chessboard.py "$COMMENT_BODY" @${{ github.event.comment.user.login }} ${{ github.event.issue.number }}
+          # parameters: issue_title, author
+          python scripts/export_chessboard.py "$ISSUE_TITLE" "${{ github.event.issue.user.login }}"
 
           # export environment variables from .env file
           while IFS= read -r line; do
@@ -38,24 +37,36 @@ jobs:
 
           if [ ! -f "chessboard.png" ]; then
             echo "Move Invalid, no chessboard.png file generated"
-            exit 0
+            exit 1
           fi
 
-          # delete all other chessboard images
-          rm -f games/game${{ github.event.issue.number }}/chessboard*.png
+          # Get game number from .env
+          GAME_NUMBER="${{ env.GAME_NUMBER }}"
+
+          # if gamenumber is not set, exit
+          if [ -z "$GAME_NUMBER" ]; then
+            echo "Game number not set, exiting"
+            exit 1
+          fi
 
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
-          mv -f chessboard.png games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png 
+          mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
 
           # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=games/game${{ github.event.issue.number }}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+          echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+
+          # Check if game has ended and initialize next game
+          if [ "${{ env.GAME_STATUS }}" != "in_progress" ]; then
+            GAME_NUMBER=$((GAME_NUMBER + 1))
+            python scripts/export_chessboard.py $GAME_NUMBER
+          fi
 
       - name: Commit changes
         if: ${{ env.MOVE_STATUS == 'valid' }}
         run: |
           # parameters: moves, image_url, link_url
-          python scripts/update_readme.py "${{ env.GAME_HISTORY }}" "https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" "https://github.com/thieleju/thieleju/issues/${{ github.event.issue.number }}" "${{ env.VALID_MOVES }}" 
+          python scripts/update_readme.py "${{ env.GAME_HISTORY }}" "https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" "${{ env.VALID_MOVES }}" 
 
           # commit changes
           git config --global user.email "actions@github.com"
@@ -65,39 +76,64 @@ jobs:
           git commit -m "🚀 Update chessboard image, readme and pgn"
           git push origin HEAD
 
-      - name: Update issue
-        if: ${{ env.MOVE_STATUS == 'valid' && env.GAME_STATUS == 'in_progress' }}
+      # - name: Update issue
+      #   if: ${{ env.MOVE_STATUS == 'valid' && env.GAME_STATUS == 'in_progress' }}
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
+      #       const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
+      #       const issueBody = `
+      #       ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
+      #       > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
+      #
+      #       <div>
+      #         <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
+      #       </div>
+      #
+      #       ### Legal moves for ${{ env.WHICH_TURN }}:
+      #       > ${{ env.VALID_MOVES }}
+      #
+      #       <details>
+      #         <summary>Show Move History</summary><br>
+      #         <div>
+      #           <img width="350" src="${gifUrl}" \>
+      #         </div>
+      #         ${moveHistory}
+      #       </details>
+      #       `
+      #       await github.rest.issues.update({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: issueBody
+      #       })
+
+      - name: Reply to issue (Game in Progress)
+        if: ${{ env.GAME_STATUS == 'in_progress' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
-            const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
-            const issueBody = `
-            ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
-            > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
+            const commenter = context.payload.comment.user.login;
 
-            <div>
-              <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
-            </div>
+            if ("${{ env.MOVE_STATUS }}" == 'valid') {
+              const replyBody = "Your move has been processed and the chessboard has been updated. Thank you for playing, @${{commenter}}! 🚀";
 
-            ### Legal moves for ${{ env.WHICH_TURN }}:
-            > ${{ env.VALID_MOVES }}
+            } else if ("${{ env.MOVE_STATUS }}" == 'invalid') {
+              const replyBody = "Your move was invalid. Please make a valid move in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...). Thank you for playing, @${{commenter}}! 🚀";
 
-            <details>
-              <summary>Show Move History</summary><br>
-              <div>
-                <img width="350" src="${gifUrl}" \>
-              </div>
-              ${moveHistory}
-            </details>
-            `
-            await github.rest.issues.update({
-              issue_number: context.issue.number,
+            } else {
+              const replyBody = "Something went wrong. :confused: Please try again.";
+            }
+
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: issueBody
-            })
-      - name: Game Ended
+              issue_number: context.issue.number,
+              body: replyBody
+            });
+
+      - name: Reply to issue (Game Ended)
         if: ${{ env.GAME_STATUS != 'in_progress' }}
         uses: actions/github-script@v7
         with:
@@ -105,26 +141,31 @@ jobs:
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
             const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
             const gameResult = ""
+            const gameResultLabel = ""
+
             switch (${{ env.GAME_STATUS }}) {
               case "white_wins":
                 gameResult = "White Won"
+                gameResultLabel = "white"
                 break;
               case "black_wins":
                 gameResult = "Black Won"
+                gameResultLabel = "black"
                 break;
               case "stalemate":
               case "insufficient_material":
               case "threefold_repetition":
               case "draw":
                 gameResult = "Game ended in a draw"
+                gameResultLabel = "draw"
                 break;
               default:
-                gameResult = "*Game ended with unknown result*"
+                gameResult = "Invalid result :("
             }
-            const issueBody = `
+            const replyBody = `
             ### ${gameResult} 
 
-            ### Final Move History
+            ### Move History
             <div>
               <img width="350" src="${gifUrl}" \>
             </div>
@@ -132,42 +173,17 @@ jobs:
 
             Thank you all for playing!
             `
-            await github.rest.issues.update({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: issueBody
-            })
-            await github.rest.issues.update({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: "closed"
-            })
 
-      - name: React to issue comment
-        uses: actions/github-script@v7
-        with:
-          script: |
-            if ("${{ env.MOVE_STATUS }}" == 'valid') {
-              await github.rest.reactions.createForIssueComment({
-                comment_id: "${{ github.event.comment.id }}",
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                content: '+1'
-              })
-            } else if("${{ env.MOVE_STATUS }}" == 'invalid') {
-              await github.rest.reactions.createForIssueComment({
-                comment_id: "${{ github.event.comment.id }}",
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                content: 'confused'
-              })
-            } else {
-              await github.rest.reactions.createForIssueComment({
-                comment_id: "${{ github.event.comment.id }}",
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                content: 'eyes'
-              })
-            }
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: replyBody
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['chess', gameResultLabel]
+            })
