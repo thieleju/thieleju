@@ -76,54 +76,20 @@ jobs:
           git commit -m "🚀 Update chessboard image, readme and pgn"
           git push origin HEAD
 
-      # - name: Update issue
-      #   if: ${{ env.MOVE_STATUS == 'valid' && env.GAME_STATUS == 'in_progress' }}
-      #   uses: actions/github-script@v7
-      #   with:
-      #     script: |
-      #       const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
-      #       const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
-      #       const issueBody = `
-      #       ### Comment on this issue to make a move! It's ${{ env.WHICH_TURN }}'s turn to move.
-      #       > Move has to be in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...) <br>
-      #
-      #       <div>
-      #         <img src="https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" \>
-      #       </div>
-      #
-      #       ### Legal moves for ${{ env.WHICH_TURN }}:
-      #       > ${{ env.VALID_MOVES }}
-      #
-      #       <details>
-      #         <summary>Show Move History</summary><br>
-      #         <div>
-      #           <img width="350" src="${gifUrl}" \>
-      #         </div>
-      #         ${moveHistory}
-      #       </details>
-      #       `
-      #       await github.rest.issues.update({
-      #         issue_number: context.issue.number,
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         body: issueBody
-      #       })
-
       - name: Reply to issue (Game in Progress)
         if: ${{ env.GAME_STATUS == 'in_progress' }}
         uses: actions/github-script@v7
         with:
           script: |
-            const commenter = context.payload.comment.user.login;
+            const commenter = context.payload.issue.user.login;
 
-            if ("${{ env.MOVE_STATUS }}" == 'valid') {
-              const replyBody = "Your move has been processed and the chessboard has been updated. Thank you for playing, @${{commenter}}! 🚀";
-
-            } else if ("${{ env.MOVE_STATUS }}" == 'invalid') {
-              const replyBody = "Your move was invalid. Please make a valid move in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...). Thank you for playing, @${{commenter}}! 🚀";
-
+            let replyBody;
+            if (process.env.MOVE_STATUS === 'valid') { 
+              replyBody = `Your move has been processed and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀`;
+            } else if (process.env.MOVE_STATUS === 'invalid') {
+              replyBody = `Your move was invalid. Please make a valid move in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...). Thank you for playing, @${commenter}! 🚀`;
             } else {
-              const replyBody = "Something went wrong. :confused: Please try again.";
+              replyBody = "Something went wrong. :confused: Please try again.";
             }
 
             await github.rest.issues.createComment({
