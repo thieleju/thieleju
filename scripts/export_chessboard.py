@@ -558,7 +558,7 @@ if __name__ == "__main__":
 
     # Get the game number from the /games directory
     GAME_NUMBER = 0
-    for game in os.listdir(settings["games_dir"]):
+    for game in os.listdir(settings["games_dir"].rstrip("/")):
         if game.startswith("game") and int(game[4:]) > GAME_NUMBER:
             GAME_NUMBER = int(game[4:])
 
