@@ -558,11 +558,6 @@ if __name__ == "__main__":
 
     # Get the game number from the /games directory
     GAME_NUMBER = 0
-
-    # print current directory 
-    print(os.getcwd())
-
-    # get the game number from the games directory
     for root, dirs, files in os.walk(settings["games_dir"]):
         for dir in dirs:
             if dir.startswith("game"):
