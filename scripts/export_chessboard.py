@@ -558,9 +558,15 @@ if __name__ == "__main__":
 
     # Get the game number from the /games directory
     GAME_NUMBER = 0
-    for game in os.listdir(settings["games_dir"].rstrip("/")):
-        if game.startswith("game") and int(game[4:]) > GAME_NUMBER:
-            GAME_NUMBER = int(game[4:])
+
+    # print current directory 
+    print(os.getcwd())
+
+    # get the game number from the games directory
+    for root, dirs, files in os.walk(settings["games_dir"]):
+        for dir in dirs:
+            if dir.startswith("game"):
+                GAME_NUMBER = int(dir[4:])
 
     # initialize the board with the moves from the pgn
     current_board = load_game_from_pgn(GAME_NUMBER)
