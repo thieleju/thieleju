@@ -43,12 +43,6 @@ jobs:
           # Get game number from .env
           GAME_NUMBER="${{ env.GAME_NUMBER }}"
 
-          # if gamenumber is not set, exit
-          if [ -z "$GAME_NUMBER" ]; then
-            echo "Game number not set, exiting"
-            exit 1
-          fi
-
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
