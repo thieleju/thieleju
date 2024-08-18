@@ -6,4 +6,4 @@
 [Black "Player 2"]
 [Result "*"]
 
-1. e4 { thieleju } 1... e5 { thieleju } 2. Nc3 { thieleju } 2... Nf6 { thieleju } 3. f4 { thieleju } 3... d5 { thieleju } 4. fxe5 { thieleju } 4... Nxe4 { thieleju } 5. Qf3 { thieleju } 5... Nxc3 { thieleju } 6. bxc3 { thieleju } 6... c5 { thieleju } 7. Qg3 { thieleju } 7... Nc6 { thieleju } 8. Bb5 { thieleju } 8... g6 { thieleju } 9. Nf3 { thieleju } 9... Bg7 { thieleju } 10. O-O { thieleju } 10... O-O { thieleju } 11. Bxc6 { thieleju } 11... bxc6 { thieleju } 12. d4 { thieleju } 12... cxd4 { thieleju } *
+1. e4 { thieleju } 1... e5 { thieleju } 2. Nc3 { thieleju } 2... Nf6 { thieleju } 3. f4 { thieleju } 3... d5 { thieleju } 4. fxe5 { thieleju } 4... Nxe4 { thieleju } 5. Qf3 { thieleju } 5... Nxc3 { thieleju } 6. bxc3 { thieleju } 6... c5 { thieleju } 7. Qg3 { thieleju } 7... Nc6 { thieleju } 8. Bb5 { thieleju } 8... g6 { thieleju } 9. Nf3 { thieleju } 9... Bg7 { thieleju } 10. O-O { thieleju } 10... O-O { thieleju } 11. Bxc6 { thieleju } 11... bxc6 { thieleju } 12. d4 { thieleju } 12... cxd4 { thieleju } 13. cxd4 { thieleju } *
