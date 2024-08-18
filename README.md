@@ -1,6 +1,6 @@
 # **Hi, I'm Julian**
 
-Currently studying Software Design at the University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a> :de: and working Node.
+Currently studying Software Design at the University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a> :de: and working with Node.
 
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thieleju&theme=blue-green&hide=jupyter%20notebook&layout=compact"  />
