@@ -59,6 +59,7 @@ jobs:
           echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
           # Check if game has ended and initialize next game
+          echo "${{ env.GAME_STATUS }}"
           if [ "${{ env.GAME_STATUS }}" != "in_progress" ]; then
             GAME_NUMBER=$((GAME_NUMBER + 1))
             python scripts/export_chessboard.py $GAME_NUMBER
