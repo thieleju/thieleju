@@ -142,6 +142,7 @@ jobs:
           script: |
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\|/g, "<br>");
             const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
+            const whoMovedLabel = "${{ env.WHICH_TURN }}" === "white" ? "black moved" : "white moved";
 
             const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif`;
 
@@ -198,7 +199,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              labels: [gameResultLabel]
+              labels: [gameResultLabel, whoMovedLabel]
             })
 
             await github.rest.issues.update({
