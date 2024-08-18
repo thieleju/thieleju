@@ -72,7 +72,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
           git add .
-          git commit -m "🚀 Update chessboard with new move ${{ env.ISSUE_TITLE }} by @${{ github.event.issue.user.login }}"
+          git commit -m "🚀 Update chessboard with new move ${{ env.ISSUE_TITLE }} by ${{ github.event.issue.user.login }}"
           git push origin HEAD
 
       - name: Reply to issue (Game in Progress)
@@ -197,7 +197,7 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number,
               state: 'closed',
-              title: `${gameResult} - Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`
+              title: `${gameResult} - Move ${ISSUE_TITLE} played by ${{ github.event.issue.user.login }}`
             });
 
       - name: Start new Game
