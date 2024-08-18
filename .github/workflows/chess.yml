@@ -36,7 +36,7 @@ jobs:
           # parameters: issue_title, author
           python scripts/export_chessboard.py "$ISSUE_TITLE" "${{ github.event.issue.user.login }}"
 
-          # export environment variables from .env file
+          # read environment variables from .env file
           while IFS= read -r line; do
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
@@ -45,8 +45,6 @@ jobs:
             echo "Move Invalid, no chessboard.png file generated"
             exit 1
           fi
-
-          cat .env
 
           # Get game number from .env
           GAME_NUMBER=$(grep GAME_NUMBER .env | cut -d '=' -f2)
@@ -62,6 +60,7 @@ jobs:
           GAME_STATUS=$(grep GAME_STATUS .env | cut -d '=' -f2)
           if [ "${{ env.GAME_STATUS }}" != "in_progress" ]; then
             GAME_NUMBER=$((GAME_NUMBER + 1))
+            echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
             python scripts/export_chessboard.py $GAME_NUMBER
           fi
 
