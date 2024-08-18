@@ -88,12 +88,37 @@ jobs:
             const commenter = context.payload.issue.user.login;
 
             let replyBody;
+            let newIssueTitle = `Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`;
+
             if (process.env.MOVE_STATUS === 'valid') { 
               replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['chess']
+              })
             } else if (process.env.MOVE_STATUS === 'invalid') {
               replyBody = `Your move was invalid, please don't edit the title of the issue. Moves are in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...).\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
+              newIssueTitle += ' (Invalid Move)';
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['chess', 'invalid move']
+              })
             } else {
+              newIssueTitle += ' (Invalid Move)';
               replyBody = "Something went wrong. :confused: Please try again.";
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: ['chess', 'invalid move']
+              })
             }
 
             await github.rest.issues.createComment({
@@ -103,18 +128,12 @@ jobs:
               body: replyBody
             });
 
-            await github.rest.issues.addLabels({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: context.issue.number,
-              labels: ['chess']
-            })
-
             await github.rest.issues.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              state: 'closed'
+              state: 'closed',
+              title: newIssueTitle
             });
 
       - name: Reply to issue (Game Ended)
@@ -122,32 +141,35 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>")
-            const gifUrl = "https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif"
-            const gameResult = ""
-            const gameResultLabel = ""
+            const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>");
+
+            const gameNumberLast = Number(${{ env.GAME_NUMBER }}) - 1;
+            const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${gameNumberLast}/game.gif`;
+
+            const gameResult = "";
+            const gameResultLabel = "";
 
             switch (${{ env.GAME_STATUS }}) {
               case "white_wins":
-                gameResult = "White Won"
-                gameResultLabel = "white"
+                gameResult = "White Won";
+                gameResultLabel = "white";
                 break;
               case "black_wins":
-                gameResult = "Black Won"
-                gameResultLabel = "black"
+                gameResult = "Black Won";
+                gameResultLabel = "black";
                 break;
               case "stalemate":
               case "insufficient_material":
               case "threefold_repetition":
               case "draw":
-                gameResult = "Game ended in a draw"
-                gameResultLabel = "draw"
+                gameResult = "Game ended in a draw";
+                gameResultLabel = "draw";
                 break;
               default:
-                gameResult = "Invalid result :("
+                gameResult = "Invalid result :(";
             }
             const replyBody = `
-            ### ${gameResult} 
+            ## ${gameResult} 
 
             ### Move History
             <div>
@@ -155,8 +177,8 @@ jobs:
             </div>
             ${moveHistory}
 
-            Thank you all for playing!
-            `
+            Thank you all for playing! :rocket:
+            `;
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
@@ -176,5 +198,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              state: 'closed'
+              state: 'closed',
+              title: `${gameResult} - Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`
             });
