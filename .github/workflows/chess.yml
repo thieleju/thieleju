@@ -83,11 +83,20 @@ jobs:
             const commenter = context.payload.issue.user.login;
             const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
+            const whoMovedLabel = "${{ env.WHICH_TURN }}" === "white" ? "black" : "white";
+
             let replyBody;
             let newIssueTitle = `Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`;
 
             if (process.env.MOVE_STATUS === 'valid') { 
               replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
+
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: [whoMovedLabel]
+              })
 
             } else if (process.env.MOVE_STATUS === 'invalid') {
               replyBody = `Your move was invalid, please don't edit the title of the issue. Moves are in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...).\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
@@ -97,7 +106,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                labels: ['invalid move']
+                labels: [whoMovedLabel, 'invalid move']
               })
             } else {
               newIssueTitle += ' (Invalid Move)';
@@ -107,7 +116,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                labels: ['invalid move']
+                labels: [whoMovedLabel, 'invalid move']
               })
             }
 
@@ -143,11 +152,11 @@ jobs:
             switch (gameStatus) {
               case "white_wins":
             gameResult = ":sparkles: White Won :sparkles:";
-                gameResultLabel = "white";
+                gameResultLabel = "white won";
                 break;
               case "black_wins":
                 gameResult = ":sparkles: Black Won :sparkles:";
-                gameResultLabel = "black";
+                gameResultLabel = "black won";
                 break;
               case "stalemate":
               case "insufficient_material":
