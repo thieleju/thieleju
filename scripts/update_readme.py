@@ -13,123 +13,91 @@ def update_readme(chess_moves, image_url, valid_moves):
     with open("README.md", "r", encoding="utf8") as file:
         readme = file.readlines()
 
-    # Find the start and end index of the table
-    # table_start = next(
-    #     (i for i, line in enumerate(readme) if '<table border="1">' in line), -1
-    # )
-    # table_end = next((i for i, line in enumerate(readme) if "</table>" in line), -1)
-    #
-    # if table_start != -1 and table_end != -1:
-    #     new_table = [
-    #         '<table border="1">\n',
-    #         f'<th rowspan="20"><a href="{issue_link}"><img width="480" src="{image_url}" /></a></th>\n',
-    #         '<th colspan="3">Last 10 moves</th>\n',
-    #         "<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n",
-    #     ]
-    #
-    #     moves = chess_moves.split("|")[-10:]  # Select only the last 10 moves
-    #     for move in moves:
-    #         move_parts = move.split(", ")
-    #         move_number = move_parts[0].split(".")[0]
-    #         if len(move_parts) == 2:
-    #             white_move, black_move = (
-    #                 move_parts[0].split(".")[1].strip(),
-    #                 move_parts[1],
-    #             )
-    #         else:
-    #             white_move, black_move = move_parts[0].split(".")[1].strip(), ""
-    #
-    #         white_parts, black_parts = white_move.split(" "), black_move.split(" ")
-    #         white_username = f'<a href="https://github.com/{white_parts[1][1:]}">{white_parts[1]}</a>'
-    #         black_username = (
-    #             f'<a href="https://github.com/{black_parts[1][1:]}">{black_parts[1]}</a>'
-    #             if len(black_parts) > 1
-    #             else ""
-    #         )
-    #
-    #         new_table.append(
-    #             f"<tr>\n<td>{move_number}</td>\n<td>{white_parts[0]} {white_username}</td>\n<td>{black_parts[0]} {black_username}</td>\n</tr>\n"
-    #         )
-    #
-    #     new_table.append("</table>\n")
-    #
-    #     # Update the README content
-    #     readme[table_start : table_end + 1] = new_table
-    #
-    #     # Update the chess game link and legal moves in the README
-    #     for i, line in enumerate(readme):
-    #         if "### ✨ Play chess by commenting on [this issue!]" in line:
-    #             readme[
-    #                 i
-    #             ] = f"### ✨ Play chess by commenting on [this issue!]({issue_link}) (WIP)\n"
-    #
-    #         if "### ♟️ Legal Moves" in line:
-    #             readme[i] = "### ♟️ Legal Moves\n"
-    #             # delete everything after ### legal moves
-    #             readme[i + 1 :] = []
-    #             # add legal moves
-    #             readme.extend([f"> {line}" for line in valid_moves.split("|")])
-    #
-    #     with open("README.md", "w", encoding="utf8") as file:
-    #         file.writelines(readme)
-    # else:
-    #     print("Could not find table in README.md")
+    # Find start and end of the existing table
+    table_start = next((i for i, line in enumerate(readme) if "<table" in line), -1)
+    table_end = next((i for i, line in enumerate(readme) if "</table>" in line), -1)
 
+    # Replace the old table with the new table
+    if table_start != -1 and table_end != -1:
+        new_table = generate_table(chess_moves, valid_moves, image_url).splitlines(keepends=True)
+        readme[table_start:table_end + 1] = new_table
 
-    # Find start of details section
-    details_start = next(
-        (i for i, line in enumerate(readme) if "<details>" in line), -1
-    )
-    details_end = next(
-        (i for i, line in enumerate(readme) if "</details>" in line), -1
-    )
-    
-    # replace content of details section
-    new_details = [
-        "<details>\n",
-        "<summary>Chess</summary>\n",
-        f'<p align="center">\n<img src="{image_url}" />\n</p>\n',
-        "<h3>♟️ Legal Moves",
-        f"<p> {valid_moves}</p>\n",
-        "</details>\n",
-    ]
-    readme[details_start : details_end + 1] = new_details 
-    
     with open("README.md", "w", encoding="utf8") as file:
         file.writelines(readme)
 
-def generate_table(chess_moves, image_url, image_link):
+
+def generate_table(chess_moves, valid_moves, image_url):
     """
     Generates a table containing the last 10 chess moves and an image.
 
     Args:
     - chess_moves (str): String containing chess moves separated by '|'.
+    - valid_moves (str): String containing valid chess moves.
     - image_url (str): URL of the image to be displayed in the table.
-    - image_link (str): URL to link when the image in the table is clicked.
 
     Returns:
     - str: The HTML code for the table.
     """
     table = []
 
-    table.append('<table border="1">\n')
+    # Start the table
+    table.append('<table border="1" style="width:100%; border-collapse:collapse;">\n')
+
+    # First row: image and placeholder for moves
+    table.append('<tr>\n')
     table.append(
-        f'<th rowspan="20"><a href="{image_link}"><img src="{image_url}" /></a></th>\n'
+        f'  <td><img src="{image_url}" alt="Chessboard" width="600"/></td>\n'
     )
-    table.append('<th colspan="3">Last 10 moves</th>\n')
-    table.append("<tr>\n<th>#</th>\n<th>White</th>\n<th>Black</th>\n</tr>\n")
-
+    
+    # Placeholder for the last 10 moves
+    table.append(
+        '  <td>\n'
+        '    <h4>Last 10 Moves</h4>\n'
+    )
+    
+    # Format last 10 moves
     moves = chess_moves.split("|")[-10:]  # Select only the last 10 moves
+    moves_text = ""
     for move in moves:
+        move_number, white_move, black_move = "", "", ""
+        
         move_parts = move.split(", ")
-        move_number = move_parts[0].split(".")[0]
-        white_move = move_parts[0].split(".")[1].strip()
-        black_move = move_parts[1]
-        table.append(
-            f"<tr>\n<td>{move_number}</td>\n<td>{white_move}</td>\n<td>{black_move}</td>\n</tr>\n"
-        )
+        
+        if len(move_parts) > 0:
+            move_number = move_parts[0].split(".")[0].strip()
+            white_move = move_parts[0].split(".")[1].strip() if "." in move_parts[0] else ""
 
-    table.append("</table>\n")
+        if len(move_parts) > 1:
+            black_move = move_parts[1].strip()
+
+        # Helper function to format move with player link
+        def format_move(move):
+            parts = move.split(" ")
+            move_piece = parts[0] if parts else ""
+            player = parts[1] if len(parts) > 1 else ""
+            player_link = f'<a href="https://github.com/{player}">{player}</a>' if player else ""
+            return f"{move_piece} {player_link}"
+
+        # Format the move into the HTML text
+        moves_text += f"{move_number}. {format_move(white_move)} {format_move(black_move)}<br>\n"
+
+    table.append(f'    {moves_text}\n')
+    table.append('  </td>\n')
+    table.append('</tr>\n')
+
+    # Last row: Legal Moves
+    table.append('<tr>\n')
+    table.append(
+        '  <td colspan="2">\n'
+        '    <h4>♟️ Legal Moves</h4>\n'
+        f'    {valid_moves}\n'
+        '     <br/><br/>\n'
+        '  </td>\n'
+    )
+    table.append('</tr>\n')
+
+    # Close the table
+    table.append('</table>\n')
 
     return "".join(table)
 
