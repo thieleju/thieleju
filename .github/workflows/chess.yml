@@ -93,12 +93,6 @@ jobs:
             if (process.env.MOVE_STATUS === 'valid') { 
               replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
 
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                labels: ['chess']
-              })
             } else if (process.env.MOVE_STATUS === 'invalid') {
               replyBody = `Your move was invalid, please don't edit the title of the issue. Moves are in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...).\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
               newIssueTitle += ' (Invalid Move)';
@@ -107,7 +101,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                labels: ['chess', 'invalid move']
+                labels: ['invalid move']
               })
             } else {
               newIssueTitle += ' (Invalid Move)';
@@ -117,7 +111,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: context.issue.number,
-                labels: ['chess', 'invalid move']
+                labels: 'invalid move']
               })
             }
 
