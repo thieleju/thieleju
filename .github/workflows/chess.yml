@@ -156,18 +156,18 @@ jobs:
 
             switch (gameStatus) {
               case "white_wins":
-                gameResult = "White Won";
+            gameResult = ":sparkles: White Won :sparkles:";
                 gameResultLabel = "white";
                 break;
               case "black_wins":
-                gameResult = "Black Won";
+                gameResult = ":sparkles: Black Won :sparkles:";
                 gameResultLabel = "black";
                 break;
               case "stalemate":
               case "insufficient_material":
               case "threefold_repetition":
               case "draw":
-                gameResult = "Game ended in a draw";
+                gameResult = ":sparkles: Game ended in a draw (${gameStatus})";
                 gameResultLabel = "draw";
                 break;
               default:
@@ -176,11 +176,13 @@ jobs:
             const replyBody = `
             ## ${gameResult} 
 
-            ### Move History
             <div>
-              <img width="350" src="${gifUrl}" \>
+              <img width="500" src="${gifUrl}" \>
             </div>
+
+            ### Game History:
             ${moveHistory}
+
 
             Thank you all for playing! :rocket:
             `;

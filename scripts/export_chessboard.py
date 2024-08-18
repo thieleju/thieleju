@@ -430,7 +430,7 @@ def format_moves(moves_list):
     for move_number in move_numbers:
         moves_with_same_number = [move for move in moves_list if move[0] == move_number]
         moves_text = ", ".join(
-            [f"{move[1]} {move[2]}" for move in moves_with_same_number]
+            [f"{move[1]} @{move[2]}" for move in moves_with_same_number]
         )
         formatted_moves.append(f"{move_number}. {moves_text}")
 
