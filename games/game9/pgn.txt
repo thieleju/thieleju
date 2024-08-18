@@ -6,4 +6,4 @@
 [Black "Player 2"]
 [Result "*"]
 
-1. e4 { thieleju } 1... g5 { thieleju } 2. d3 { thieleju } 2... f5 { thieleju } *
+1. e4 { thieleju } 1... g5 { thieleju } 2. d3 { thieleju } 2... f5 { thieleju } 3. Qh5# { thieleju } *
