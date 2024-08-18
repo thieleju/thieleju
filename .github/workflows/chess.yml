@@ -41,9 +41,11 @@ jobs:
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          if [ ! -f "chessboard.png" ]; then
-            echo "Move Invalid, no chessboard.png file generated"
-            exit 1
+          # if MOVE_STATUS is "invalid" skip rest of the steps
+          MOVE_STATUS=$(grep MOVE_STATUS .env | cut -d '=' -f2)
+          if [ "$MOVE_STATUS" == "invalid" ]; then
+            echo "Move $MOVE_STATUS was invalid, skipping ..."
+            exit 0
           fi
 
           # Get game number from .env
