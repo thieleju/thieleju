@@ -155,8 +155,8 @@ def add_annotations(draw, is_white_bottom):
         draw.text(
             (
                 i * settings["cell_size"]
-                + settings["cell_size"] // 2
-                + settings["styling"]["annotation_offset_letters"],
+                    + settings["cell_size"] // 2
+                    + settings["styling"]["annotation_offset_letters"],
                 settings["height"] - 20,
             ),
             chr(97 + i) if is_white_bottom else chr(97 + 7 - i),
@@ -167,8 +167,8 @@ def add_annotations(draw, is_white_bottom):
             (
                 5,
                 i * settings["cell_size"]
-                + settings["cell_size"] // 2
-                - settings["styling"]["annotation_offset_numbers"],
+                    + settings["cell_size"] // 2
+                    - settings["styling"]["annotation_offset_numbers"],
             ),
             str(8 - i) if is_white_bottom else str(i + 1),
             fill=bg_color if is_white_bottom else text_color,
@@ -481,7 +481,7 @@ def save_board_image(board, username, game_number):
         move_number = board.fullmove_number - 1
     else:
         move_number = board.fullmove_number
-    
+
     player = "0" if not was_whites_turn else "1"
     move_number = str(move_number).zfill(3)
     file_name = f"move-{move_number}-{player}-{username}.png"
