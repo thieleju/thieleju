@@ -15,26 +15,17 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 
 <table border="1" style="width:100%; border-collapse:collapse;">
 <tr>
-  <td><img src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game0/chessboard-1723979218.png" alt="Chessboard" width="600"/></td>
+  <td><img src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1723980482.png" alt="Chessboard" width="600"/></td>
   <td>
     <h4>Last 10 Moves</h4>
-    6. bxc3 <a href="https://github.com/thieleju">thieleju</a> c5 <a href="https://github.com/thieleju">thieleju</a><br>
-7. Qg3 <a href="https://github.com/thieleju">thieleju</a> Nc6 <a href="https://github.com/thieleju">thieleju</a><br>
-8. Bb5 <a href="https://github.com/thieleju">thieleju</a> g6 <a href="https://github.com/thieleju">thieleju</a><br>
-9. Nf3 <a href="https://github.com/thieleju">thieleju</a> Bg7 <a href="https://github.com/thieleju">thieleju</a><br>
-10. O-O <a href="https://github.com/thieleju">thieleju</a> O-O <a href="https://github.com/thieleju">thieleju</a><br>
-11. Bxc6 <a href="https://github.com/thieleju">thieleju</a> bxc6 <a href="https://github.com/thieleju">thieleju</a><br>
-12. d4 <a href="https://github.com/thieleju">thieleju</a> cxd4 <a href="https://github.com/thieleju">thieleju</a><br>
-13. cxd4 <a href="https://github.com/thieleju">thieleju</a> f6 <a href="https://github.com/thieleju">thieleju</a><br>
-14. Kh1 <a href="https://github.com/thieleju">thieleju</a> fxe5 <a href="https://github.com/thieleju">thieleju</a><br>
-15. Nxe5 <a href="https://github.com/thieleju">thieleju</a> Rxf1# <a href="https://github.com/thieleju">thieleju</a><br>
+    1. e4 <a href="https://github.com/thieleju">thieleju</a>  <br>
 
   </td>
 </tr>
 <tr>
   <td colspan="2">
     <h4>♟️ Click a move to play</h4>
-    <a href="https://github.com/thieleju/thieleju/issues/new?title=&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank"></a>
+    <a href="https://github.com/thieleju/thieleju/issues/new?title=Nh6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">Nh6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=Nf6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">Nf6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=Nc6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">Nc6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=Na6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">Na6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=h6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">h6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=g6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">g6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=f6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">f6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=e6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">e6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=d6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">d6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=c6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">c6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=b6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">b6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=a6&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">a6</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=h5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">h5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=g5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">g5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=f5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">f5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=e5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">e5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=d5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">d5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=c5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">c5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=b5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">b5</a>, <a href="https://github.com/thieleju/thieleju/issues/new?title=a5&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">a5</a>
      <br/><br/>
   </td>
 </tr>
