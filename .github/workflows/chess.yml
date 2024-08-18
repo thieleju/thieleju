@@ -212,8 +212,8 @@ jobs:
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
           TIMESTAMP=-$(date +%s)
+          CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
           mv -f chessboard.png $CHESSBOARD_FILENAME
 
           VALID_MOVES=$(grep VALID_MOVES .env | cut -d '=' -f2)
@@ -226,5 +226,5 @@ jobs:
           git config --global user.name "GitHub Actions"
 
           git add .
-          git commit -m "🚀 Started new game!"
+          git commit -m "🚀 Started new game #${GAME_NUMBER}"
           git push origin HEAD
