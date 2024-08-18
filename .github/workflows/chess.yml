@@ -51,6 +51,9 @@ jobs:
           # Get game number from .env
           GAME_NUMBER=$(grep GAME_NUMBER .env | cut -d '=' -f2)
 
+          # Remove all other chessboard images from game directory
+          rm -f games/game${GAME_NUMBER}/chessboard*.png
+
           # rename file to chessboard.png + timestamp
           TIMESTAMP=-$(date +%s)
           mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
@@ -77,7 +80,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
           git add .
-          git commit -m "🚀 Update chessboard image, readme and pgn"
+          git commit -m "🚀 Update chessboard with new move '${{ env.ISSUE_TITLE }}' by @${{ github.event.issue.user.login }}"
           git push origin HEAD
 
       - name: Reply to issue (Game in Progress)
