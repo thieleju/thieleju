@@ -181,7 +181,7 @@ jobs:
             </div>
 
             ### Game History:
-            ${moveHistory}
+            <p>${moveHistory}</p>
 
 
             Thank you all for playing! :rocket:
