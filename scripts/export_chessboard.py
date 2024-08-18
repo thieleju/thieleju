@@ -564,12 +564,14 @@ if __name__ == "__main__":
     MOVE = sys.argv[1]
     USERNAME = sys.argv[2]
 
-    # Get the game number from the /games directory
+    # Get the highest game number from the games directory
     GAME_NUMBER = 0
-    for root, dirs, files in os.walk(settings["games_dir"]):
-        for dir in dirs:
-            if dir.startswith("game"):
-                GAME_NUMBER = int(dir[4:])
+
+    for game in os.listdir(settings["games_dir"]):
+        if game.startswith("game") and game[4:].isdigit():
+            game_number = int(game[4:])
+            if game_number > GAME_NUMBER:
+                GAME_NUMBER = game_number
 
     print(f"Game number: {GAME_NUMBER}")
 
