@@ -1,9 +1,0 @@
-[Event "Chess Game"]
-[Site "https://github.com/thieleju"]
-[Date "2024.08.17"]
-[Round "Game 0"]
-[White "Player 1"]
-[Black "Player 2"]
-[Result "*"]
-
-1. e4 { @thieleju } *

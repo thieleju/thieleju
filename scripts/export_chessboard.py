@@ -554,7 +554,7 @@ if __name__ == "__main__":
         sys.exit(0)
 
     MOVE = sys.argv[1]
-    USERNAME = "@" + sys.argv[2]
+    USERNAME = sys.argv[2]
 
     # Get the game number from the /games directory
     GAME_NUMBER = 0
