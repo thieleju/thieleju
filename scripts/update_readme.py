@@ -81,6 +81,9 @@ def generate_table(chess_moves, valid_moves, image_url):
         # Format the move into the HTML text
         moves_text += f"{move_number}. {format_move(white_move)} {format_move(black_move)}<br>\n"
 
+    if chess_moves.strip() == "":
+        moves_text = "No moves yet"
+
     table.append(f'    {moves_text}\n')
     table.append('  </td>\n')
     table.append('</tr>\n')
