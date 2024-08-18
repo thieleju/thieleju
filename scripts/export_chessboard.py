@@ -17,7 +17,7 @@ settings = {
         "border_size": 2,
         "border_color": "#161618",
         "annotation_color": "#161618",
-        # hardcoded until I figure out how to calculate this
+        # hardcoded until I figure out how to calculate this
         "annotation_offset_numbers": 28,
         "annotation_offset_letters": 20,
     },
@@ -232,6 +232,14 @@ def reset_game(game_number):
     initialize_pgn(game_number)
     export_chessboard(board)
 
+    save_env_variables_to_file(
+        GAME_STATUS="in_progress",
+        MOVE_STATUS="valid",
+        WHICH_TURN="white",
+        GAME_NUMBER=game_number,
+        VALID_MOVES=", ".join([board.san(move) for move in board.legal_moves]),
+        GAME_HISTORY=""
+    )
 
 def get_valid_moves_from_fen(fen):
     """Gets the valid moves from a FEN string.
@@ -499,7 +507,7 @@ def create_gif_from_images(input_folder, output_gif):
     images = []
     # Load all images in the folder
     for filename in sorted(os.listdir(input_folder)):
-        if filename.endswith(".png") or filename.endswith(".jpg"):
+        if filename.startswith("move") and filename.endswith(".png"):
             image_path = os.path.join(input_folder, filename)
             images.append(Image.open(image_path))
 
