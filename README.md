@@ -18,10 +18,7 @@ Currently studying Software Design at the University of Applied Sciences in <a h
   <td><img src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game6/chessboard-1723987609.png" alt="Chessboard" width="550"/></td>
   <td>
     <h4>Last 10 Moves</h4>
-    1. e4 <a href="https://github.com/@thieleju">@thieleju</a> g5 <a href="https://github.com/@thieleju">@thieleju</a><br>
-2. d3 <a href="https://github.com/@thieleju">@thieleju</a> f5 <a href="https://github.com/@thieleju">@thieleju</a><br>
-3. Qh5# <a href="https://github.com/@thieleju">@thieleju</a>  <br>
-
+    No moves yet
   </td>
 </tr>
 <tr>
