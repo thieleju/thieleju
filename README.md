@@ -15,10 +15,10 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 
 <table border="1" style="width:100%; border-collapse:collapse;">
 <tr>
-  <td><img src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game1/chessboard-1723942373.png" alt="Chessboard" width="600"/></td>
+  <td><img src="https://raw.githubusercontent.com/thieleju/thieleju/main/games/game0/chessboard-1723943035.png" alt="Chessboard" width="600"/></td>
   <td>
     <h4>Last 10 Moves</h4>
-    1. Nc3 <a href="https://github.com/thieleju">thieleju</a>  <br>
+    1. e4 <a href="https://github.com/thieleju">thieleju</a>  <br>
 
   </td>
 </tr>
