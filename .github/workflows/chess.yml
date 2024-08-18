@@ -171,6 +171,11 @@ jobs:
 
 
             Thank you all for playing! :rocket:
+
+            ---
+
+            :chess_pawn: New game started! Click [here](https://github.com/thieleju) go to the new game.
+
             `;
 
             await github.rest.issues.createComment({
