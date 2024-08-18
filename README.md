@@ -11,7 +11,7 @@ Currently studying Software Design at the University of Applied Sciences in <a h
 
 <br/>
 
-<h1>♟️ Chess </h1>
+<h2>♟️ Chess - Anyone can play!</h2>
 
 <table border="1" style="width:100%; border-collapse:collapse;">
 <tr>
