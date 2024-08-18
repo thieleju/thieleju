@@ -60,7 +60,7 @@ jobs:
 
           # Check if game has ended and initialize next game
           GAME_STATUS=$(grep GAME_STATUS .env | cut -d '=' -f2)
-          if [ "${{ env.GAME_STATUS }}" != "in_progress" ]; then
+          if [ "$GAME_STATUS" != "in_progress" ]; then
             GAME_NUMBER=$((GAME_NUMBER + 1))
             echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
             python scripts/export_chessboard.py $GAME_NUMBER
