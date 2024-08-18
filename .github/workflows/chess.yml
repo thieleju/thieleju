@@ -44,7 +44,7 @@ jobs:
           # if MOVE_STATUS is "invalid" skip rest of the steps
           MOVE_STATUS=$(grep MOVE_STATUS .env | cut -d '=' -f2)
           if [ "$MOVE_STATUS" == "invalid" ]; then
-            echo "Move $MOVE_STATUS was invalid, skipping ..."
+            echo "Move was invalid, skipping ..."
             exit 0
           fi
 
@@ -145,7 +145,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>");
+            const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\|/g, "<br>");
             const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
             const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif`;
