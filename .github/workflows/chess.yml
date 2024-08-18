@@ -152,8 +152,9 @@ jobs:
 
             let gameResult = "";
             let gameResultLabel = "";
+            const gameStatus = "${{ env.GAME_STATUS }}";
 
-            switch (${{ env.GAME_STATUS }}) {
+            switch (gameStatus) {
               case "white_wins":
                 gameResult = "White Won";
                 gameResultLabel = "white";

@@ -88,7 +88,7 @@ def generate_table(chess_moves, valid_moves, image_url):
     # Last row: Legal Moves
     table.append('<tr>\n')
     valid_moves_with_links = [
-        f'<a href="https://github.com/thieleju/thieleju/issues/new?title={move}&body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess" target="_blank">{move}</a>'
+        f'<a href="https://github.com/thieleju/thieleju/issues/new?body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess&title={move}" target="_blank">{move}</a>'
         for move in valid_moves.split(", ")
     ]
     table.append(
