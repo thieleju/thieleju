@@ -207,26 +207,19 @@ jobs:
           echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
           python scripts/export_chessboard.py $GAME_NUMBER
 
-          cat .env
-
           # read environment variables from .env file
           while IFS= read -r line; do
             echo "$line" >> $GITHUB_ENV
           done < <(grep -v '^#' .env)
 
-          cat .env
-
+          CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
           TIMESTAMP=-$(date +%s)
-          mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
+          mv -f chessboard.png $CHESSBOARD_FILENAME
 
-          # add Filename to github_env
-          echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
-
-
-          cat .env
+          VALID_MOVES=$(grep VALID_MOVES .env | cut -d '=' -f2)
 
           # parameters: moves, image_url, link_url
-          python scripts/update_readme.py "" "https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" "${{ env.VALID_MOVES }}" 
+          python scripts/update_readme.py "" "https://raw.githubusercontent.com/thieleju/thieleju/main/${CHESSBOARD_FILENAME}" "$VALID_MOVES"
 
           # commit changes
           git config --global user.email "actions@github.com"
