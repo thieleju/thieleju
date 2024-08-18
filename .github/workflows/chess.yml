@@ -81,7 +81,7 @@ jobs:
 
             let replyBody;
             if (process.env.MOVE_STATUS === 'valid') { 
-              replyBody = `Your move has been processed and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀`;
+              replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀`;
             } else if (process.env.MOVE_STATUS === 'invalid') {
               replyBody = `Your move was invalid. Please make a valid move in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...). Thank you for playing, @${commenter}! 🚀`;
             } else {
