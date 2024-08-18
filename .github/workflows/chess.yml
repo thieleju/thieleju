@@ -86,6 +86,7 @@ jobs:
         with:
           script: |
             const commenter = context.payload.issue.user.login;
+            const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
             let replyBody;
             let newIssueTitle = `Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`;
@@ -136,6 +137,7 @@ jobs:
         with:
           script: |
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>");
+            const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
             const gameNumberLast = Number(${{ env.GAME_NUMBER }}) - 1;
             const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${gameNumberLast}/game.gif`;
