@@ -1,9 +1,0 @@
-[Event "Chess Game"]
-[Site "https://github.com/thieleju"]
-[Date "2024.08.18"]
-[Round "Game 2"]
-[White "Player 1"]
-[Black "Player 2"]
-[Result "*"]
-
-*
