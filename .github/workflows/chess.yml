@@ -67,6 +67,12 @@ jobs:
             GAME_NUMBER=$((GAME_NUMBER + 1))
             echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
             python scripts/export_chessboard.py $GAME_NUMBER
+
+            TIMESTAMP=-$(date +%s)
+            mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
+
+            # add Filename to github_env
+            echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
           fi
 
       - name: Commit changes
@@ -80,7 +86,7 @@ jobs:
           git config --global user.name "GitHub Actions"
 
           git add .
-          git commit -m "🚀 Update chessboard with new move '${{ env.ISSUE_TITLE }}' by @${{ github.event.issue.user.login }}"
+          git commit -m "🚀 Update chessboard with new move ${{ env.ISSUE_TITLE }} by @${{ github.event.issue.user.login }}"
           git push origin HEAD
 
       - name: Reply to issue (Game in Progress)
@@ -142,11 +148,10 @@ jobs:
             const moveHistory = "${{ env.GAME_HISTORY }}".replace(/\.\s/g, ".&nbsp&nbsp").replace(/\|/g, "<br>");
             const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
-            const gameNumberLast = Number(${{ env.GAME_NUMBER }}) - 1;
-            const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${gameNumberLast}/game.gif`;
+            const gifUrl = `https://raw.githubusercontent.com/thieleju/thieleju/main/games/game${{ env.GAME_NUMBER }}/game.gif`;
 
-            const gameResult = "";
-            const gameResultLabel = "";
+            let gameResult = "";
+            let gameResultLabel = "";
 
             switch (${{ env.GAME_STATUS }}) {
               case "white_wins":
