@@ -48,21 +48,21 @@ def generate_table(chess_moves, valid_moves, image_url):
     table.append(
         f'  <td><img src="{image_url}" alt="Chessboard" width="550"/></td>\n'
     )
-    
+
     # Placeholder for the last 10 moves
     table.append(
         '  <td>\n'
-        '    <h4>Last 10 Moves</h4>\n'
+            '    <h4>Last 10 Moves</h4>\n'
     )
-    
+
     # Format last 10 moves
     moves = chess_moves.split("|")[-10:]  # Select only the last 10 moves
     moves_text = ""
     for move in moves:
         move_number, white_move, black_move = "", "", ""
-        
+
         move_parts = move.split(", ")
-        
+
         if len(move_parts) > 0:
             move_number = move_parts[0].split(".")[0].strip()
             white_move = move_parts[0].split(".")[1].strip() if "." in move_parts[0] else ""
@@ -99,10 +99,10 @@ def generate_table(chess_moves, valid_moves, image_url):
     ]
     table.append(
         '  <td colspan="2">\n'
-        '    <h4>♟️ Click a move to play</h4>\n'
-        f'    {", ".join(valid_moves_with_links)}\n'
-        '     <br/><br/>\n'
-        '  </td>\n'
+            '    <h4>♟️ Click a move to play</h4>\n'
+            f'    {", ".join(valid_moves_with_links)}\n'
+            '     <br/><br/>\n'
+            '  </td>\n'
     )
     table.append('</tr>\n')
 
@@ -114,3 +114,6 @@ def generate_table(chess_moves, valid_moves, image_url):
 
 if __name__ == "__main__":
     update_readme(sys.argv[1], sys.argv[2], sys.argv[3])
+
+
+
