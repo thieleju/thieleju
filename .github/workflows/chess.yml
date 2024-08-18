@@ -61,25 +61,6 @@ jobs:
           # add Filename to github_env
           echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
 
-          # Check if game has ended and initialize next game
-          GAME_STATUS=$(grep GAME_STATUS .env | cut -d '=' -f2)
-          if [ "$GAME_STATUS" != "in_progress" ]; then
-            GAME_NUMBER=$((GAME_NUMBER + 1))
-            echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
-            python scripts/export_chessboard.py $GAME_NUMBER
-
-            # read environment variables from .env file
-            while IFS= read -r line; do
-              echo "$line" >> $GITHUB_ENV
-            done < <(grep -v '^#' .env)
-
-            TIMESTAMP=-$(date +%s)
-            mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
-
-            # add Filename to github_env
-            echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
-          fi
-
       - name: Commit changes
         if: ${{ env.MOVE_STATUS == 'valid' }}
         run: |
@@ -213,3 +194,32 @@ jobs:
               state: 'closed',
               title: `${gameResult} - Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`
             });
+
+      - name: Start new Game
+        if: ${{ env.GAME_STATUS != 'in_progress' }}
+        run: |
+          GAME_NUMBER=$((GAME_NUMBER + 1))
+          echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
+          python scripts/export_chessboard.py $GAME_NUMBER
+
+          # read environment variables from .env file
+          while IFS= read -r line; do
+            echo "$line" >> $GITHUB_ENV
+          done < <(grep -v '^#' .env)
+
+          TIMESTAMP=-$(date +%s)
+          mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
+
+          # add Filename to github_env
+          echo "CHESSBOARD_FILENAME=games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png" >> $GITHUB_ENV
+
+          # parameters: moves, image_url, link_url
+          python scripts/update_readme.py "" "https://raw.githubusercontent.com/thieleju/thieleju/main/${{ env.CHESSBOARD_FILENAME }}" "${{ env.VALID_MOVES }}" 
+
+          # commit changes
+          git config --global user.email "actions@github.com"
+          git config --global user.name "GitHub Actions"
+
+          git add .
+          git commit -m "🚀 Update chessboard with new move ${{ env.ISSUE_TITLE }} by @${{ github.event.issue.user.login }}"
+          git push origin HEAD
