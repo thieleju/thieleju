@@ -83,7 +83,7 @@ jobs:
             const commenter = context.payload.issue.user.login;
             const ISSUE_TITLE = "${{ env.ISSUE_TITLE }}";
 
-            const whoMovedLabel = "${{ env.WHICH_TURN }}" === "white" ? "black" : "white";
+            const whoMovedLabel = "${{ env.WHICH_TURN }}" === "white" ? "black moved" : "white moved";
 
             let replyBody;
             let newIssueTitle = `Move ${ISSUE_TITLE} played by @${{ github.event.issue.user.login }}`;
