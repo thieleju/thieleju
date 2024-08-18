@@ -571,12 +571,13 @@ if __name__ == "__main__":
             if dir.startswith("game"):
                 GAME_NUMBER = int(dir[4:])
 
+    print(f"Game number: {GAME_NUMBER}")
+
     # initialize the board with the moves from the pgn
     current_board = load_game_from_pgn(GAME_NUMBER)
 
     # make move based on the parameter passed
     IS_MOVE_VALID = make_move(current_board, MOVE)
-
     MOVES = ", ".join([current_board.san(move) for move in current_board.legal_moves])
     TURN = "white" if current_board.turn == chess.WHITE else "black"
     MOVE_STATUS = "valid" if IS_MOVE_VALID else "invalid"
