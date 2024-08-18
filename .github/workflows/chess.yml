@@ -7,6 +7,12 @@ on:
 jobs:
   Make-a-move:
     runs-on: ubuntu-latest
+
+    # Only allow one job to run at a time
+    concurrency:
+      group: chess
+      cancel-in-progress: true
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -81,9 +87,9 @@ jobs:
 
             let replyBody;
             if (process.env.MOVE_STATUS === 'valid') { 
-              replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀`;
+              replyBody = `Your move was played and the chessboard has been updated. Thank you for playing, @${commenter}! 🚀\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
             } else if (process.env.MOVE_STATUS === 'invalid') {
-              replyBody = `Your move was invalid. Please make a valid move in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...). Thank you for playing, @${commenter}! 🚀`;
+              replyBody = `Your move was invalid, please don't edit the title of the issue. Moves are in Standard Algebraic Notation ([SAN](https://www.chess.com/terms/chess-notation)) (e4, Bf4, exd5, Qxf7+, ...).\n\nCheck the updated chessboard [here](https://github.com/thieleju)`;
             } else {
               replyBody = "Something went wrong. :confused: Please try again.";
             }
