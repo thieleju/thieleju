@@ -46,7 +46,7 @@ def generate_table(chess_moves, valid_moves, image_url):
     # First row: image and placeholder for moves
     table.append('<tr>\n')
     table.append(
-        f'  <td><img src="{image_url}" alt="Chessboard" width="600"/></td>\n'
+        f'  <td><img src="{image_url}" alt="Chessboard" width="550"/></td>\n'
     )
     
     # Placeholder for the last 10 moves

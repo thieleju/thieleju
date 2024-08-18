@@ -68,6 +68,11 @@ jobs:
             echo "Starting new game with GAME_NUMBER $GAME_NUMBER"
             python scripts/export_chessboard.py $GAME_NUMBER
 
+            # read environment variables from .env file
+            while IFS= read -r line; do
+              echo "$line" >> $GITHUB_ENV
+            done < <(grep -v '^#' .env)
+
             TIMESTAMP=-$(date +%s)
             mv -f chessboard.png games/game${GAME_NUMBER}/chessboard$TIMESTAMP.png
 
