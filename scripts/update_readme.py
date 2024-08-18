@@ -46,7 +46,7 @@ def generate_table(chess_moves, valid_moves, image_url):
     # First row: image and placeholder for moves
     table.append('<tr>\n')
     table.append(
-        f'  <td><img src="{image_url}" alt="Chessboard" width="550"/></td>\n'
+        f'  <td><img src="{image_url}" alt="Chessboard" width="600"/></td>\n'
     )
     
     # Placeholder for the last 10 moves
@@ -88,12 +88,12 @@ def generate_table(chess_moves, valid_moves, image_url):
     # Last row: Legal Moves
     table.append('<tr>\n')
     valid_moves_with_links = [
-        f'<a href="https://github.com/thieleju/thieleju/issues/new?title={move}&body=Click+%27Submit+Issue%27+to+play+the+move">{move}</a>'
+        f'<a href="https://github.com/thieleju/thieleju/issues/new?title={move}&body=Click+%27Submit+new+Issue%27+to+play+the+move" target="_blank">{move}</a>'
         for move in valid_moves.split(", ")
     ]
     table.append(
         '  <td colspan="2">\n'
-        '    <h4>♟️ Click a move to play/<h4>\n'
+        '    <h4>♟️ Click a move to play</h4>\n'
         f'    {", ".join(valid_moves_with_links)}\n'
         '     <br/><br/>\n'
         '  </td>\n'
