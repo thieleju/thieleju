@@ -90,7 +90,11 @@ def generate_table(chess_moves, valid_moves, image_url):
 
     # Last row: Legal Moves
     table.append('<tr>\n')
+
+    issueBody = "Click 'Submit new Issue' to play. Your move will be played in about 25 seconds"
+
     valid_moves_with_links = [
+        f'<a href="https://github.com/thieleju/thieleju/issues/new?body={issueBody}&labels=chess&title={move}" target="_blank">{move}</a>'
         f'<a href="https://github.com/thieleju/thieleju/issues/new?body=Click+%27Submit+new+Issue%27+to+play+the+move&labels=chess&title={move}" target="_blank">{move}</a>'
         for move in valid_moves.split(", ")
     ]
