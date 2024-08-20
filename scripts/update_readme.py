@@ -75,7 +75,7 @@ def generate_table(chess_moves, valid_moves, image_url):
             parts = move.split(" ")
             move_piece = parts[0] if parts else ""
             player = parts[1] if len(parts) > 1 else ""
-            player_link = f'<a href="https://github.com/{player}">{player}</a>' if player else ""
+            player_link = f'<a href="https://github.com/{player[1:]}">{player}</a>' if player else ""
             return f"{move_piece} {player_link}"
 
         # Format the move into the HTML text
