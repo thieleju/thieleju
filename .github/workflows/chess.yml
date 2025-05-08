@@ -15,17 +15,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get chess move notation from issue
         run: |
           echo "ISSUE_TITLE=${{ github.event.issue.title }}" >> $GITHUB_ENV
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.11.2"
-          cache: "pip"
+          python-version: "3.11"
 
       - name: Generate Chessboard Image and update readme
         run: |
