@@ -6,4 +6,4 @@
 [Black "Player 2"]
 [Result "*"]
 
-1. e4 { thieleju } 1... e5 { Shiippii } 2. Nc3 { thieleju } 2... Qf6 { Duke194 } 3. Bc4 { thieleju } 3... Bc5 { flexx7 } *
+1. e4 { thieleju } 1... e5 { Shiippii } 2. Nc3 { thieleju } 2... Qf6 { Duke194 } 3. Bc4 { thieleju } 3... Bc5 { flexx7 } 4. Nf3 { thieleju } *
