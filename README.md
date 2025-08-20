@@ -1,8 +1,10 @@
 # **Hi, I'm Julian**
 
-- <a href="https://github.com/thieleju/dotfiles">My dotfiles<a/>
-- Working with Node 🐌
-- B.Sc. at University of Applied Sciences in <a href="https://www.th-ab.de/en/" >Aschaffenburg</a>
+<div align="center">
+🐌 working with Node • 🧩 developing chrome extensions • 🎮 modding games • 🛠️ <a href="https://github.com/thieleju/dotfiles">my dotfiles</a>
+</div>
+
+<br/>
 
 <p align="center">
   <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=thieleju&theme=blue-green&hide=jupyter%20notebook&layout=compact"  />
